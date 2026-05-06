@@ -30,7 +30,10 @@
         .blog-card a { color: #0d47a1; text-decoration: none; font-size: 1.1em; }
         .blog-card a:hover { text-decoration: underline; }
         .blog-card .brand { font-size: 0.85em; color: #666; }
-        .contact { background: white; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); padding: 30px; margin-top: 40px; }
+        .contact { background: white; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); padding: 30px; margin-top: 40px; text-align: center; }
+        .direct-contact { background: white; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); padding: 20px; margin-top: 20px; text-align: center; }
+        .direct-contact a { color: #0d47a1; text-decoration: none; font-weight: bold; margin: 0 15px; }
+        .direct-contact a:hover { text-decoration: underline; }
         footer { background: #0d47a1; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
         footer a { color: #bbdefb; text-decoration: none; margin: 0 10px; }
         footer a:hover { text-decoration: underline; }
@@ -87,17 +90,28 @@
         <h2 class="section-title">Latest Articles</h2>
         <div class="blog-grid" id="blog-posts">Loading articles…</div>
 
+        <!-- Direct Contact Information -->
+        <div class="direct-contact">
+            <h3 style="color:#0d47a1; margin-bottom:15px;">Contact Us Directly</h3>
+            <p>
+                📞 <strong>WhatsApp:</strong> 
+                <a href="https://wa.me/919812018036" target="_blank">+91 9812018036</a>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                ✉️ <strong>Email:</strong> 
+                <a href="mailto:kfcwriters@gmail.com">kfcwriters@gmail.com</a>
+            </p>
+        </div>
+
         <div class="contact">
             <h2 class="section-title">Get in Touch</h2>
-            <iframe src="https://docs.google.com/forms/d/e/1A4fNapunm084tmz20OcK2e5KmZ5j4n56-TAMIVPF07s/viewform?embedded=true" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSem1Jqrgfjy2QrZl7-h34BxWWolQsSPQCQFXkf2H1IMiaCmjw/viewform?embedded=true" width="640" height="1481" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
         </div>
     </div>
 
     <footer>
         <p>© 2026 KFC – Knowledge Framework Consulting. All rights reserved.</p>
         <p>
-            <a href="https://t.me/MedicalWriting_Services" target="_blank">Telegram</a> |
-            <a href="https://dev.to/kfc_writers_12f474fa70382" target="_blank">Dev.to</a>
+            <a href="https://t.me/MedicalWriting_Services" target="_blank">Telegram</a>
         </p>
     </footer>
 
@@ -105,7 +119,6 @@
         const blogContainer = document.getElementById('blog-posts');
         const devtoUsername = 'kfc_writers_12f474fa70382';
 
-        // Helper: check if a title contains known unwanted phrases
         function isUnwantedTitle(title) {
             const unwanted = ['time mastery', 'freelancer'];
             const lowerTitle = title.toLowerCase();
@@ -117,7 +130,6 @@
                 const response = await fetch(`https://dev.to/api/articles?username=${devtoUsername}&per_page=20`);
                 const articles = await response.json();
 
-                // FILTER: must have tag 'medical', NOT have prohibited tags, AND NOT have unwanted title
                 const medicalArticles = articles.filter(article => {
                     if (!article.tag_list) return false;
                     const tags = article.tag_list;
