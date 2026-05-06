@@ -105,21 +105,29 @@
         const blogContainer = document.getElementById('blog-posts');
         const devtoUsername = 'kfc_writers_12f474fa70382';
 
+        // Helper: check if a title contains known unwanted phrases
+        function isUnwantedTitle(title) {
+            const unwanted = ['time mastery', 'freelancer'];
+            const lowerTitle = title.toLowerCase();
+            return unwanted.some(word => lowerTitle.includes(word));
+        }
+
         async function loadArticles() {
             try {
                 const response = await fetch(`https://dev.to/api/articles?username=${devtoUsername}&per_page=20`);
                 const articles = await response.json();
 
-                // SHOW ONLY articles that have the tag "medical"
-                // AND do NOT have any of the excluded brand tags OR the productivity tag
+                // FILTER: must have tag 'medical', NOT have prohibited tags, AND NOT have unwanted title
                 const medicalArticles = articles.filter(article => {
                     if (!article.tag_list) return false;
                     const tags = article.tag_list;
-                    return tags.includes('medical') &&
-                           !tags.includes('biochemistry') &&
-                           !tags.includes('nutrition') &&
-                           !tags.includes('tutoring') &&
-                           !tags.includes('productivity');
+                    const tagOk = tags.includes('medical') &&
+                                  !tags.includes('biochemistry') &&
+                                  !tags.includes('nutrition') &&
+                                  !tags.includes('tutoring') &&
+                                  !tags.includes('productivity');
+                    const titleOk = !isUnwantedTitle(article.title);
+                    return tagOk && titleOk;
                 });
 
                 if (medicalArticles.length === 0) {
@@ -127,7 +135,6 @@
                     return;
                 }
 
-                // Display up to 6 most recent filtered articles
                 blogContainer.innerHTML = medicalArticles.slice(0, 6).map(article => `
                     <div class="blog-card">
                         <h4><a href="${article.url}" target="_blank">${article.title}</a></h4>
