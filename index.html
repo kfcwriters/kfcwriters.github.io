@@ -110,14 +110,16 @@
                 const response = await fetch(`https://dev.to/api/articles?username=${devtoUsername}&per_page=20`);
                 const articles = await response.json();
 
-                // SHOW ONLY articles that have the tag "medical" AND do NOT have the other brand tags
+                // SHOW ONLY articles that have the tag "medical"
+                // AND do NOT have any of the excluded brand tags OR the productivity tag
                 const medicalArticles = articles.filter(article => {
                     if (!article.tag_list) return false;
                     const tags = article.tag_list;
                     return tags.includes('medical') &&
                            !tags.includes('biochemistry') &&
                            !tags.includes('nutrition') &&
-                           !tags.includes('tutoring');
+                           !tags.includes('tutoring') &&
+                           !tags.includes('productivity');
                 });
 
                 if (medicalArticles.length === 0) {
