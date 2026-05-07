@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>KFC Medical Writing Tips</title>
+    <link>https://kfcwriters.github.io</link>
+    <description>Daily medical writing tips, tools, and strategies for researchers and clinicians.</description>
+    <language>en-us</language>
+    <itunes:author>KFC - Knowledge Framework Consulting</itunes:author>
+    <itunes:summary>Daily medical writing tips, tools, and strategies for researchers and clinicians.</itunes:summary>
+    <itunes:image href="https://kfcwriters.github.io/logo.png"/>
+    <itunes:explicit>no</itunes:explicit>
+    <itunes:owner>
+      <itunes:name>KFC - Knowledge Framework Consulting</itunes:name>
+      <itunes:email>kfcwriters@gmail.com</itunes:email>
+    </itunes:owner>
+    <itunes:category text="Education"/>
+    <itunes:category text="Science &amp; Medicine"/>
+  
+  <item>
+    <title>How to Write a Medical Manuscript: A Step-by-Step Guide to Getting Published</title>
+    <description>Here is a concise summary of the article:
+
+**How to Write a Medical Manuscript: A Step-by-Step Guide to Getting Published**
+
+Writing a high-quality medical manuscript is a rigorous process, but success begins with careful preparation. Before drafting, it is essential to select a target journal that aligns with your study’s scope and impact. This ensures your research reaches the right audience and adheres to specific formatting guidelines, which significantly reduces the risk of desk rejection.
+
+The most effective way to draft a paper is to follow the standard IMRAD structure: Introduction, Methods, Results, and Discussion. Experts recommend starting with the Methods and Results sections, as these are the most objective parts of your study. By documenting your data and statistical analysis first, you create a solid foundation before moving on to the more interpretive narrative of the Discussion.
+
+Once the draft is complete, the focus shifts to refinement and clarity. A compelling title and a concise abstract are vital, as these are often the only parts of the paper that editors and peer reviewers read initially. After a thorough self-edit for flow and accuracy, submitting your work with a professional cover letter marks the final step toward successful publication in the medical field.
+
+Read the full article: https://dev.to/kfc_writers_12f474fa70382/how-to-write-a-medical-manuscript-a-step-by-step-guide-to-getting-published-4gg5
+
+Visit: https://kfcwriters.github.io</description>
+    <enclosure url="https://kfcwriters.github.io/audio/episode-2026-05-07.mp3" length="0" type="audio/mpeg"/>
+    <pubDate>Thu, 07 May 2026 18:01:32 +0000</pubDate>
+    <itunes:duration>00:01:20</itunes:duration>
+    <itunes:explicit>no</itunes:explicit>
+  </item>
+</channel>
+</rss>
