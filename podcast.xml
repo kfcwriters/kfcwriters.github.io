@@ -78,5 +78,26 @@ Visit: https://kfcwriters.github.io</description>
     <itunes:duration>00:01:24</itunes:duration>
     <itunes:explicit>no</itunes:explicit>
   </item>
+
+  <item>
+    <title>How to Write a Medical Manuscript: A Step-by-Step Guide to Getting Published</title>
+    <link>https://kfcwriters.github.io/audio/episode-2026-05-08.mp3</link>
+    <description>Here is a summary of **How to Write a Medical Manuscript: A Step-by-Step Guide to Getting Published**, designed for spoken audio:
+
+Writing a medical manuscript or thesis is a demanding task, but success comes down to a clear, structured approach. The process begins long before you type the first word. It starts with choosing a target journal early to ensure your formatting and tone align with their specific requirements. By understanding your audience from the outset, you can tailor your message to meet the expectations of editors and peer reviewers.
+
+The guide emphasizes the "IMRaD" structure—Introduction, Methods, Results, and Discussion. It suggests drafting the Methods and Results sections first, as these are the most objective parts of your research. This builds momentum before you tackle the more analytical Introduction and Discussion. Clear, concise language is essential; the goal is to communicate complex clinical data in a way that is accessible and logically organized.
+
+Finally, the guide highlights the importance of the revision phase. Polishing your abstract and title is critical, as these are the first things a reviewer sees. Before submitting, double-check your citations and ensure you have followed all ethical reporting guidelines. With a methodical strategy and attention to detail, you can navigate the path from a rough draft to a published medical paper.
+
+Read the full article: https://dev.to/kfc_writers_12f474fa70382/how-to-write-a-medical-manuscript-a-step-by-step-guide-to-getting-published-4gg5
+
+Visit: https://kfcwriters.github.io</description>
+    <enclosure url="https://kfcwriters.github.io/audio/episode-2026-05-08.mp3" length="0" type="audio/mpeg"/>
+    <guid isPermaLink="true">https://kfcwriters.github.io/audio/episode-2026-05-08.mp3</guid>
+    <pubDate>Fri, 08 May 2026 20:39:25 +0000</pubDate>
+    <itunes:duration>00:01:28</itunes:duration>
+    <itunes:explicit>no</itunes:explicit>
+  </item>
 </channel>
 </rss>
