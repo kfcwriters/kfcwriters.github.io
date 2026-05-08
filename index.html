@@ -87,6 +87,15 @@
             Don’t risk your publication – choose genuine expertise.
         </div>
 
+        <!-- Latest Podcast Episode -->
+        <h2 class="section-title">Latest Podcast Episode</h2>
+        <div class="podcast-player" id="podcast-episode" style="background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); padding: 20px; margin-bottom: 30px; text-align: center;">
+            Loading latest episode…
+        </div>
+        <div style="text-align: center; margin-bottom: 40px;">
+            <a href="https://kfcwriters.github.io/podcast.xml" class="btn" target="_blank">Subscribe to Podcast</a>
+        </div>
+
         <h2 class="section-title">Latest Articles</h2>
         <div class="blog-grid" id="blog-posts">Loading articles…</div>
 
@@ -126,6 +135,7 @@
         </p>
     </footer>
 
+    <!-- Fetch latest articles from Dev.to API -->
     <script>
         const blogContainer = document.getElementById('blog-posts');
         const devtoUsername = 'kfc_writers_12f474fa70382';
@@ -172,6 +182,47 @@
         }
 
         loadArticles();
+    </script>
+
+    <!-- Fetch latest podcast episode from RSS feed -->
+    <script>
+        (function() {
+            const container = document.getElementById('podcast-episode');
+            const rssUrl = 'https://kfcwriters.github.io/podcast.xml';
+
+            fetch(rssUrl)
+                .then(response => response.text())
+                .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+                .then(xml => {
+                    const firstItem = xml.querySelector('item');
+                    if (!firstItem) {
+                        container.innerHTML = '<p>No episodes yet.</p>';
+                        return;
+                    }
+                    const title = firstItem.querySelector('title')?.textContent || 'Untitled';
+                    const enclosure = firstItem.querySelector('enclosure');
+                    const audioUrl = enclosure?.getAttribute('url');
+                    const pubDate = firstItem.querySelector('pubDate')?.textContent || '';
+                    const dateStr = pubDate ? new Date(pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
+
+                    if (!audioUrl) {
+                        container.innerHTML = '<p>Audio not found.</p>';
+                        return;
+                    }
+
+                    container.innerHTML = `
+                        <h4 style="margin-bottom: 10px;">${title}</h4>
+                        ${dateStr ? `<p style="color: #666; font-size: 0.9em;">${dateStr}</p>` : ''}
+                        <audio controls style="width: 100%; margin-top: 10px;">
+                            <source src="${audioUrl}" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    `;
+                })
+                .catch(() => {
+                    container.innerHTML = '<p>Unable to load podcast. Please check back later.</p>';
+                });
+        })();
     </script>
 </body>
 </html>
