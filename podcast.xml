@@ -36,5 +36,26 @@ Visit: https://kfcwriters.github.io</description>
     <itunes:duration>00:01:20</itunes:duration>
     <itunes:explicit>no</itunes:explicit>
   </item>
+
+  <item>
+    <title>How to Write a Medical Manuscript: A Step-by-Step Guide to Getting Published</title>
+    <link>https://kfcwriters.github.io/audio/episode-2026-05-08.mp3</link>
+    <description>Here is a summary of the article: **How to Write a Medical Manuscript: A Step-by-Step Guide to Getting Published.**
+
+Writing a medical manuscript is a complex task, but success begins with careful planning. Before you start writing, you must select a target journal that aligns with your research topic and audience. Reviewing the journal’s specific guidelines ensures your formatting is correct from the start, saving you significant time during the submission process.
+
+The most effective way to draft your paper is to follow the standard IMRaD structure: Introduction, Methods, Results, and Discussion. Start by writing the Methods and Results sections first, as these are the most objective parts of your study. Once the data is clearly presented, you can frame the Introduction to provide context and use the Discussion to explain the clinical relevance of your findings.
+
+The final stage focuses on refinement and clarity. A compelling abstract and a clear title are essential, as they are often the only parts of your work people read before deciding to dive deeper. Finally, thorough proofreading and a strong cover letter to the editor will help ensure your research makes a professional impression and moves successfully through the peer-review process.
+
+Read the full article: https://dev.to/kfc_writers_12f474fa70382/how-to-write-a-medical-manuscript-a-step-by-step-guide-to-getting-published-4gg5
+
+Visit: https://kfcwriters.github.io</description>
+    <enclosure url="https://kfcwriters.github.io/audio/episode-2026-05-08.mp3" length="0" type="audio/mpeg"/>
+    <guid isPermaLink="true">https://kfcwriters.github.io/audio/episode-2026-05-08.mp3</guid>
+    <pubDate>Fri, 08 May 2026 08:25:18 +0000</pubDate>
+    <itunes:duration>00:01:16</itunes:duration>
+    <itunes:explicit>no</itunes:explicit>
+  </item>
 </channel>
 </rss>
