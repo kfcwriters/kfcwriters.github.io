@@ -59,7 +59,7 @@
     </header>
 
     <div class="container">
-        <!-- 🚀 Hero Section (New – Converts Visitors into Clients) -->
+        <!-- 🚀 Hero Section -->
         <div class="hero">
             <h2>Your Medical Manuscript, Ready for Publication</h2>
             <p>
@@ -71,7 +71,7 @@
             <p style="margin-top: 15px;">✔ 100% original work &nbsp; ✔ Guaranteed plagiarism‑free &nbsp; ✔ Published authors trust us</p>
         </div>
 
-        <!-- ⭐ Testimonials (New – Social Proof) -->
+        <!-- ⭐ Testimonials -->
         <div class="testimonials">
             <div class="testimonial-card">
                 <p>“My thesis was accepted with minor revisions after their editing. Professional and fast.”</p>
@@ -122,7 +122,7 @@
             Don’t risk your publication – choose genuine expertise.
         </div>
 
-        <!-- 🎧 Podcast (Optimised) -->
+        <!-- 🎧 Podcast -->
         <h2 class="section-title">Listen to How We Help Researchers Get Published</h2>
         <div class="podcast-player" id="podcast-episode">
             Loading latest episode…
@@ -227,7 +227,7 @@
         loadArticles();
     </script>
 
-    <!-- Fetch latest podcast episode from RSS feed -->
+    <!-- Fetch latest podcast episode from RSS feed (now shows the LAST episode) -->
     <script>
         (function() {
             const container = document.getElementById('podcast-episode');
@@ -237,7 +237,8 @@
                 .then(response => response.text())
                 .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
                 .then(xml => {
-                    const firstItem = xml.querySelector('item');
+                    const allItems = xml.querySelectorAll('item');
+                    const firstItem = allItems[allItems.length - 1];   // the last item = latest episode
                     if (!firstItem) {
                         container.innerHTML = '<p>No episodes yet.</p>';
                         return;
