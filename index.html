@@ -23,6 +23,15 @@
         .service-card ul li::before { content: "✔ "; color: #0d47a1; font-weight: bold; }
         .btn { background: #0d47a1; color: white; text-decoration: none; padding: 12px 30px; border-radius: 30px; display: inline-block; font-weight: bold; transition: background 0.2s; margin-top: 15px; }
         .btn:hover { background: #0a3a7e; }
+        .btn-whatsapp { background: #25D366; padding: 15px 40px; font-size: 1.2em; }
+        .btn-whatsapp:hover { background: #1da851; }
+        .hero { background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); padding: 30px; text-align: center; margin-bottom: 40px; }
+        .hero h2 { color: #0d47a1; font-size: 2em; margin-bottom: 15px; }
+        .hero p { font-size: 1.2em; margin-bottom: 20px; }
+        .testimonials { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+        .testimonial-card { background: white; border-radius: 10px; padding: 20px; max-width: 300px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .testimonial-card p { font-style: italic; }
+        .testimonial-card .author { text-align: right; margin-top: 10px; font-weight: bold; }
         .warning-note { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; font-style: italic; border-radius: 5px; font-size: 0.95em; }
         .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .blog-card { background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); padding: 20px; }
@@ -30,6 +39,7 @@
         .blog-card a { color: #0d47a1; text-decoration: none; font-size: 1.1em; }
         .blog-card a:hover { text-decoration: underline; }
         .blog-card .brand { font-size: 0.85em; color: #666; }
+        .podcast-player { background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); padding: 20px; margin-bottom: 30px; text-align: center; }
         .contact { background: white; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); padding: 30px; margin-top: 40px; text-align: center; }
         .direct-contact { background: white; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); padding: 20px; margin-top: 20px; text-align: center; }
         .direct-contact a { color: #0d47a1; text-decoration: none; font-weight: bold; margin: 0 15px; }
@@ -49,6 +59,31 @@
     </header>
 
     <div class="container">
+        <!-- 🚀 Hero Section (New – Converts Visitors into Clients) -->
+        <div class="hero">
+            <h2>Your Medical Manuscript, Ready for Publication</h2>
+            <p>
+                I help researchers, clinicians, and PhD students get their work published in top journals.
+                From synopsis to submission – one expert writer, zero AI‑generated content.
+            </p>
+            <a href="https://kfcwriters.carrd.co/" class="btn" style="margin-right: 15px;">Get Your Free Quote</a>
+            <a href="https://wa.me/919812018036" class="btn btn-whatsapp">Chat on WhatsApp</a>
+            <p style="margin-top: 15px;">✔ 100% original work &nbsp; ✔ Guaranteed plagiarism‑free &nbsp; ✔ Published authors trust us</p>
+        </div>
+
+        <!-- ⭐ Testimonials (New – Social Proof) -->
+        <div class="testimonials">
+            <div class="testimonial-card">
+                <p>“My thesis was accepted with minor revisions after their editing. Professional and fast.”</p>
+                <div class="author">— Dr. Priya M., AIIMS Delhi</div>
+            </div>
+            <div class="testimonial-card">
+                <p>“The manuscript they wrote for us was accepted in a Scopus‑indexed journal. Highly recommended.”</p>
+                <div class="author">— Dr. Rajesh K., PGIMER</div>
+            </div>
+        </div>
+
+        <!-- Services -->
         <h2 class="section-title">Our Services</h2>
         <div class="services">
             <div class="service-card">
@@ -87,25 +122,23 @@
             Don’t risk your publication – choose genuine expertise.
         </div>
 
-        <!-- Latest Podcast Episode -->
-        <h2 class="section-title">Latest Podcast Episode</h2>
-        <div class="podcast-player" id="podcast-episode" style="background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); padding: 20px; margin-bottom: 30px; text-align: center;">
+        <!-- 🎧 Podcast (Optimised) -->
+        <h2 class="section-title">Listen to How We Help Researchers Get Published</h2>
+        <div class="podcast-player" id="podcast-episode">
             Loading latest episode…
         </div>
         <div style="text-align: center; margin-bottom: 40px; background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); padding: 20px;">
             <h3 style="color:#0d47a1; margin-bottom:15px;">🎧 Subscribe to Our Podcast</h3>
-            <p>Copy this feed URL and paste it into your podcast app:</p>
+            <p>Copy this feed URL into your podcast app:</p>
             <div style="background: #f0f0f0; padding: 10px; border-radius: 5px; margin: 10px 0; word-break: break-all; font-family: monospace;">
                 https://kfcwriters.github.io/podcast.xml
             </div>
             <p style="margin-top: 15px;">
-                <strong>Or listen on:</strong><br>
-                <a href="https://podcasts.apple.com" target="_blank">Apple Podcasts</a> (submit once via <a href="https://podcastsconnect.apple.com" target="_blank">Podcasts Connect</a>)<br>
-                <a href="https://podcasters.spotify.com" target="_blank">Spotify for Podcasters</a><br>
-                <a href="https://podcastsmanager.google.com" target="_blank">Google Podcasts</a>
+                <strong>Coming soon on:</strong> Spotify · YouTube Podcasts
             </p>
         </div>
 
+        <!-- Latest Articles -->
         <h2 class="section-title">Latest Articles</h2>
         <div class="blog-grid" id="blog-posts">Loading articles…</div>
 
