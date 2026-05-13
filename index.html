@@ -23,6 +23,8 @@
         .service-card ul li::before { content: "✔ "; color: #0d47a1; font-weight: bold; }
         .btn { background: #0d47a1; color: white; text-decoration: none; padding: 12px 30px; border-radius: 30px; display: inline-block; font-weight: bold; transition: background 0.2s; margin-top: 15px; }
         .btn:hover { background: #0a3a7e; }
+        .btn-spotify { background: #1DB954; }
+        .btn-spotify:hover { background: #169F45; }
         .btn-whatsapp { background: #25D366; padding: 15px 40px; font-size: 1.2em; }
         .btn-whatsapp:hover { background: #1da851; }
         .hero { background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); padding: 30px; text-align: center; margin-bottom: 40px; }
@@ -129,12 +131,12 @@
         </div>
         <div style="text-align: center; margin-bottom: 40px; background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); padding: 20px;">
             <h3 style="color:#0d47a1; margin-bottom:15px;">🎧 Subscribe to Our Podcast</h3>
-            <p>Copy this feed URL into your podcast app:</p>
-            <div style="background: #f0f0f0; padding: 10px; border-radius: 5px; margin: 10px 0; word-break: break-all; font-family: monospace;">
-                https://kfcwriters.github.io/podcast.xml
-            </div>
-            <p style="margin-top: 15px;">
-                <strong>Coming soon on:</strong> Spotify · YouTube Podcasts
+            <p>
+                <a href="https://open.spotify.com/show/033fW7vXbKhdSPwnjcTyZ7" target="_blank" class="btn btn-spotify" style="margin-right: 10px;">▶ Listen on Spotify</a>
+                <a href="https://kfcwriters.github.io/podcast.xml" class="btn" target="_blank">Copy RSS Feed</a>
+            </p>
+            <p style="margin-top: 15px; font-size: 0.9em;">
+                Also coming soon to YouTube Podcasts (under review)
             </p>
         </div>
 
@@ -238,15 +240,15 @@
                 .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
                 .then(xml => {
                     const allItems = xml.querySelectorAll('item');
-                    const firstItem = allItems[allItems.length - 1];   // the last item = latest episode
-                    if (!firstItem) {
+                    const latestItem = allItems[allItems.length - 1];   // the last item
+                    if (!latestItem) {
                         container.innerHTML = '<p>No episodes yet.</p>';
                         return;
                     }
-                    const title = firstItem.querySelector('title')?.textContent || 'Untitled';
-                    const enclosure = firstItem.querySelector('enclosure');
+                    const title = latestItem.querySelector('title')?.textContent || 'Untitled';
+                    const enclosure = latestItem.querySelector('enclosure');
                     const audioUrl = enclosure?.getAttribute('url');
-                    const pubDate = firstItem.querySelector('pubDate')?.textContent || '';
+                    const pubDate = latestItem.querySelector('pubDate')?.textContent || '';
                     const dateStr = pubDate ? new Date(pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
 
                     if (!audioUrl) {
