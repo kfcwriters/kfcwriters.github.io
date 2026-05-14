@@ -23,8 +23,6 @@
         .service-card ul li::before { content: "✔ "; color: #0d47a1; font-weight: bold; }
         .btn { background: #0d47a1; color: white; text-decoration: none; padding: 12px 30px; border-radius: 30px; display: inline-block; font-weight: bold; transition: background 0.2s; margin-top: 15px; }
         .btn:hover { background: #0a3a7e; }
-        .btn-spotify { background: #1DB954; }
-        .btn-spotify:hover { background: #169F45; }
         .btn-whatsapp { background: #25D366; padding: 15px 40px; font-size: 1.2em; }
         .btn-whatsapp:hover { background: #1da851; }
         .hero { background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); padding: 30px; text-align: center; margin-bottom: 40px; }
@@ -73,6 +71,29 @@
             <p style="margin-top: 15px;">✔ 100% original work &nbsp; ✔ Guaranteed plagiarism‑free &nbsp; ✔ Published authors trust us</p>
         </div>
 
+        <!-- 💰 Services & Pricing (NEW) -->
+        <h2 class="section-title">Services &amp; Pricing</h2>
+        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px;">
+            <div style="background: white; border-radius: 10px; padding: 25px; max-width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); text-align: center;">
+                <h3 style="color: #0d47a1;">Protocol / Synopsis</h3>
+                <p style="font-size: 1.5em; font-weight: bold;">₹3,000 – ₹5,000</p>
+                <p>From topic to final draft</p>
+                <a href="https://wa.me/919812018036" class="btn btn-whatsapp">Inquire on WhatsApp</a>
+            </div>
+            <div style="background: white; border-radius: 10px; padding: 25px; max-width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); text-align: center;">
+                <h3 style="color: #0d47a1;">Thesis Writing</h3>
+                <p style="font-size: 1.5em; font-weight: bold;">₹40,000 – ₹50,000</p>
+                <p>Complete original thesis, plagiarism‑free</p>
+                <a href="https://wa.me/919812018036" class="btn btn-whatsapp">Inquire on WhatsApp</a>
+            </div>
+            <div style="background: white; border-radius: 10px; padding: 25px; max-width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); text-align: center;">
+                <h3 style="color: #0d47a1;">Journal Paper / Manuscript</h3>
+                <p style="font-size: 1.5em; font-weight: bold;">₹5,000 – ₹15,000</p>
+                <p>As per journal requirements, ready for submission</p>
+                <a href="https://wa.me/919812018036" class="btn btn-whatsapp">Inquire on WhatsApp</a>
+            </div>
+        </div>
+
         <!-- ⭐ Testimonials -->
         <div class="testimonials">
             <div class="testimonial-card">
@@ -85,7 +106,7 @@
             </div>
         </div>
 
-        <!-- Services -->
+        <!-- Original Services (kept for completeness) -->
         <h2 class="section-title">Our Services</h2>
         <div class="services">
             <div class="service-card">
@@ -124,6 +145,13 @@
             Don’t risk your publication – choose genuine expertise.
         </div>
 
+        <!-- 🔍 Free Sample Edit Offer (NEW) -->
+        <div style="background: #e3f2fd; border-radius: 10px; padding: 25px; text-align: center; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.06);">
+            <h3 style="color: #0d47a1; margin-bottom: 10px;">🔍 Not Sure About Quality? Get a Free Sample Edit</h3>
+            <p>Send us 200 words from your manuscript, and we’ll edit it for free — no strings attached.</p>
+            <a href="https://wa.me/919812018036" class="btn btn-whatsapp" style="margin-top: 10px;">Claim Your Free Edit on WhatsApp</a>
+        </div>
+
         <!-- 🎧 Podcast -->
         <h2 class="section-title">Listen to How We Help Researchers Get Published</h2>
         <div class="podcast-player" id="podcast-episode">
@@ -132,7 +160,7 @@
         <div style="text-align: center; margin-bottom: 40px; background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); padding: 20px;">
             <h3 style="color:#0d47a1; margin-bottom:15px;">🎧 Subscribe to Our Podcast</h3>
             <p>
-                <a href="https://open.spotify.com/show/033fW7vXbKhdSPwnjcTyZ7" target="_blank" class="btn btn-spotify" style="margin-right: 10px;">▶ Listen on Spotify</a>
+                <a href="https://open.spotify.com/show/033fW7vXbKhdSPwnjcTyZ7" target="_blank" class="btn" style="background: #1DB954; margin-right: 10px;">▶ Listen on Spotify</a>
                 <a href="https://kfcwriters.github.io/podcast.xml" class="btn" target="_blank">Copy RSS Feed</a>
             </p>
             <p style="margin-top: 15px; font-size: 0.9em;">
@@ -229,7 +257,7 @@
         loadArticles();
     </script>
 
-    <!-- Fetch latest podcast episode from RSS feed (now shows the LAST episode) -->
+    <!-- Fetch latest podcast episode from RSS feed -->
     <script>
         (function() {
             const container = document.getElementById('podcast-episode');
@@ -240,15 +268,15 @@
                 .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
                 .then(xml => {
                     const allItems = xml.querySelectorAll('item');
-                    const latestItem = allItems[allItems.length - 1];   // the last item
-                    if (!latestItem) {
+                    const firstItem = allItems[allItems.length - 1];   // the last item = latest episode
+                    if (!firstItem) {
                         container.innerHTML = '<p>No episodes yet.</p>';
                         return;
                     }
-                    const title = latestItem.querySelector('title')?.textContent || 'Untitled';
-                    const enclosure = latestItem.querySelector('enclosure');
+                    const title = firstItem.querySelector('title')?.textContent || 'Untitled';
+                    const enclosure = firstItem.querySelector('enclosure');
                     const audioUrl = enclosure?.getAttribute('url');
-                    const pubDate = latestItem.querySelector('pubDate')?.textContent || '';
+                    const pubDate = firstItem.querySelector('pubDate')?.textContent || '';
                     const dateStr = pubDate ? new Date(pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
 
                     if (!audioUrl) {
