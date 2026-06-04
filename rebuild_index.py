@@ -101,7 +101,7 @@ def build_index(files):
             <p><strong>Editor-in-Chief:</strong> Abhishek Bansal</p>
             <p><strong>Email:</strong> kfcwriters@gmail.com</p>
             <p><strong>Phone:</strong> +91 9812018036</p>
-            <p><strong>Address:</strong> [Please provide your address – can be city/state or office address]</p>
+            <p><strong>Address:</strong>Haryana</p>
         </div>
     </div>
     <div class="footer">
