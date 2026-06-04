@@ -69,6 +69,9 @@ def build_index(files):
     <style>
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
         body {{ font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif; background: #f8fafc; color: #1e293b; }}
+        .navbar {{ background: #0d47a1; padding: 15px 20px; text-align: center; }}
+        .navbar a {{ color: white; text-decoration: none; margin: 0 15px; font-weight: 500; }}
+        .navbar a:hover {{ text-decoration: underline; }}
         .journal-header {{ background: linear-gradient(135deg, #1e3a5f, #0d47a1); color: white; padding: 50px 20px 40px; text-align: center; }}
         .journal-header h1 {{ font-size: 2.5em; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.5px; }}
         .journal-header .subtitle {{ font-size: 1.1em; opacity: 0.9; font-style: italic; }}
@@ -88,12 +91,19 @@ def build_index(files):
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="aims-scope.html">Aims & Scope</a>
+        <a href="editorial-board.html">Editorial Board</a>
+        <a href="author-guidelines.html">Author Guidelines</a>
+        <a href="submit.html">Submit Article</a>
+    </div>
     <div class="journal-header">
         <h1>Global Journal of Medical Research</h1>
         <p class="subtitle">Published by Knowledge Framework Consulting</p>
     </div>
     <div class="container">
-        <div class="issn-badge">ISSN: Coming soon</div>
+        <div class="issn-badge">ISSN: Applied for</div>
         {cards_html}
         <div class="contact-info">
             <h2>Contact Information</h2>
@@ -101,12 +111,12 @@ def build_index(files):
             <p><strong>Editor-in-Chief:</strong> Abhishek Bansal</p>
             <p><strong>Email:</strong> kfcwriters@gmail.com</p>
             <p><strong>Phone:</strong> +91 9812018036</p>
-            <p><strong>Address:</strong>Haryana</p>
+            <p><strong>Address:</strong> Haryana, India</p>
         </div>
     </div>
     <div class="footer">
         <p>© 2026 Knowledge Framework Consulting. All rights reserved.</p>
-        <p><a href="https://kfcwriters.github.io">Visit our main site</a> | <a href="mailto:kfcwriters@gmail.com">Contact</a></p>
+        <p><a href="https://kfcwriters.github.io">Main Site</a> | <a href="mailto:kfcwriters@gmail.com">Contact</a></p>
     </div>
 </body>
 </html>"""
@@ -119,7 +129,7 @@ def upload_index(html_content):
     if resp.status_code == 200:
         sha = resp.json()["sha"]
     payload = {
-        "message": "Update review index with contact details",
+        "message": "Update review index with navigation bar",
         "content": base64.b64encode(html_content.encode()).decode(),
         "branch": BRANCH
     }
