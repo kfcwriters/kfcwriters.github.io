@@ -1,4 +1,5 @@
-import os, sys, json, base64, requests, logging
+import os, sys, json, base64, requests, logging, re
+from io import BytesIO
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout,
                     format='%(asctime)s - %(levelname)s - %(message)s')
@@ -24,8 +25,29 @@ def get_files():
         return [f for f in resp.json() if f["name"].endswith(".html") and f["name"] != "index.html"]
     return []
 
+def extract_title(download_url):
+    """Fetch an HTML file and return the content of the <title> tag."""
+    try:
+        resp = requests.get(download_url, timeout=15)
+        if resp.status_code == 200:
+            match = re.search(r"<title>(.*?)</title>", resp.text, re.IGNORECASE)
+            if match:
+                return match.group(1).strip()
+    except Exception:
+        pass
+    return None
+
 def build_index(files):
-    links = "\n".join([f'<li><a href="{f["name"]}">{f["name"].replace("review-","").replace(".html","")}</a></li>' for f in files])
+    links = []
+    for f in files:
+        # Try to get the real title from the file
+        title = extract_title(f["download_url"])
+        if not title:
+            # Fallback to a formatted date
+            title = f["name"].replace("review-", "").replace(".html", "")
+        links.append(f'<li><a href="{f["name"]}">{title}</a></li>')
+
+    links_html = "\n".join(links)
     index_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,7 +64,7 @@ def build_index(files):
 <body>
     <h1>Original Medical Reviews</h1>
     <p>Published by the Knowledge Framework Consulting Journal of Medical Writing Reviews.</p>
-    <ul>{links}</ul>
+    <ul>{links_html}</ul>
 </body>
 </html>"""
     return index_html
