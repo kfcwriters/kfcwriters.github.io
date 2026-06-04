@@ -5,156 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Journal of Medical Research</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
-            color: #1a2a3a;
-            line-height: 1.6;
-        }
-
-        /* Navigation */
-        .navbar {
-            background: #0d47a1;
-            padding: 1rem;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            margin: 0 1rem;
-            font-weight: 500;
-            transition: opacity 0.2s;
-        }
-        .navbar a:hover {
-            opacity: 0.8;
-            text-decoration: underline;
-        }
-
-        /* Header */
-        .journal-header {
-            background: linear-gradient(135deg, #0d47a1, #1e3a5f);
-            color: white;
-            text-align: center;
-            padding: 3rem 1rem;
-        }
-        .journal-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        .journal-header .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        /* Container */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-
-        /* ISSN badge */
-        .issn-badge {
-            text-align: center;
-            margin-bottom: 2rem;
-            color: #5a6e7c;
-            font-size: 0.9rem;
-        }
-
-        /* Article cards */
-        .articles-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        .article-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            padding: 1.5rem;
-            transition: transform 0.2s, box-shadow 0.2s;
-            border: 1px solid #e2e8f0;
-        }
-        .article-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        }
-        .article-card h3 {
-            margin-bottom: 0.5rem;
-        }
-        .article-card h3 a {
-            color: #0d47a1;
-            text-decoration: none;
-        }
-        .article-card h3 a:hover {
-            text-decoration: underline;
-        }
-        .article-card .date {
-            color: #6c7a89;
-            font-size: 0.85rem;
-            margin-bottom: 0.75rem;
-        }
-        .article-card .excerpt {
-            color: #2c3e50;
-            font-size: 0.95rem;
-        }
-
-        /* Contact info */
-        .contact-info {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            border: 1px solid #e2e8f0;
-        }
-        .contact-info h2 {
-            color: #0d47a1;
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-        .contact-info p {
-            margin-bottom: 0.5rem;
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 2rem;
-            background: #1e2a36;
-            color: #94a3b8;
-            font-size: 0.85rem;
-            margin-top: 2rem;
-        }
-        .footer a {
-            color: #94a3b8;
-            text-decoration: none;
-        }
-        .footer a:hover {
-            color: white;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .navbar a {
-                margin: 0 0.5rem;
-                font-size: 0.9rem;
-            }
-            .journal-header h1 {
-                font-size: 1.8rem;
-            }
-            .container {
-                padding: 1rem;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif; background: #f8fafc; color: #1e293b; }
+        .navbar { background: #0d47a1; padding: 15px 20px; text-align: center; }
+        .navbar a { color: white; text-decoration: none; margin: 0 15px; font-weight: 500; }
+        .navbar a:hover { text-decoration: underline; }
+        .journal-header { background: linear-gradient(135deg, #1e3a5f, #0d47a1); color: white; padding: 50px 20px 40px; text-align: center; }
+        .journal-header h1 { font-size: 2.5em; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.5px; }
+        .journal-header .subtitle { font-size: 1.1em; opacity: 0.9; font-style: italic; }
+        .container { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
+        .issn-badge { text-align: center; margin-bottom: 30px; color: #64748b; font-size: 0.9em; }
+        .article-card { background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 25px; margin-bottom: 16px; border: 1px solid #e2e8f0; transition: box-shadow 0.2s; }
+        .article-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+        .article-card h3 { margin-bottom: 8px; font-size: 1.2em; }
+        .article-card h3 a { color: #0d47a1; text-decoration: none; }
+        .article-card h3 a:hover { text-decoration: underline; }
+        .article-card .date { color: #64748b; font-size: 0.9em; }
+        .contact-info { background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 25px; margin-top: 30px; border: 1px solid #e2e8f0; }
+        .contact-info h2 { color: #0d47a1; margin-bottom: 15px; }
+        .contact-info p { margin-bottom: 8px; }
+        .footer { text-align: center; padding: 30px 20px; color: #64748b; font-size: 0.85em; border-top: 1px solid #e2e8f0; margin-top: 40px; }
+        .footer a { color: #0d47a1; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -165,20 +36,57 @@
         <a href="author-guidelines.html">Author Guidelines</a>
         <a href="submit.html">Submit Article</a>
     </div>
-
     <div class="journal-header">
         <h1>Global Journal of Medical Research</h1>
         <p class="subtitle">Published by Knowledge Framework Consulting</p>
     </div>
-
     <div class="container">
         <div class="issn-badge">ISSN: Applied for</div>
-
-        <div class="articles-list">
-            <!-- Article list will be inserted here by your Python script -->
-            <!-- The Python script will replace this comment with dynamic cards -->
+        
+        <div class="article-card">
+            <h3><a href="aims-scope.html">Aims & Scope – Global Journal of Medical Research</a></h3>
+            <div class="date"></div>
         </div>
 
+        <div class="article-card">
+            <h3><a href="author-guidelines.html">Author Guidelines – Global Journal of Medical Research</a></h3>
+            <div class="date"></div>
+        </div>
+
+        <div class="article-card">
+            <h3><a href="editorial-board.html">Editorial Board – Global Journal of Medical Research</a></h3>
+            <div class="date"></div>
+        </div>
+
+        <div class="article-card">
+            <h3><a href="review-2026-06-04.html">Best Practices for Preparing a Medical Manuscript for Journal Submission</a></h3>
+            <div class="date"></div>
+        </div>
+
+        <div class="article-card">
+            <h3><a href="review-2026-06-05.html">How to Write a Strong Abstract for Medical Journals</a></h3>
+            <div class="date"></div>
+        </div>
+
+        <div class="article-card">
+            <h3><a href="review-2026-06-06.html">Common Mistakes in Case Report Writing and How to Avoid Them</a></h3>
+            <div class="date"></div>
+        </div>
+
+        <div class="article-card">
+            <h3><a href="review-2026-06-07.html">Literature Review Strategies for Medical Researchers</a></h3>
+            <div class="date"></div>
+        </div>
+
+        <div class="article-card">
+            <h3><a href="review-2026-06-08.html">Journal Selection Strategies for Medical Manuscripts</a></h3>
+            <div class="date"></div>
+        </div>
+
+        <div class="article-card">
+            <h3><a href="submit.html">Submit Article – Global Journal of Medical Research</a></h3>
+            <div class="date"></div>
+        </div>
         <div class="contact-info">
             <h2>Contact Information</h2>
             <p><strong>Publisher:</strong> Knowledge Framework Consulting</p>
@@ -188,7 +96,6 @@
             <p><strong>Address:</strong> Haryana, India</p>
         </div>
     </div>
-
     <div class="footer">
         <p>© 2026 Knowledge Framework Consulting. All rights reserved.</p>
         <p><a href="https://kfcwriters.github.io">Main Site</a> | <a href="mailto:kfcwriters@gmail.com">Contact</a></p>
