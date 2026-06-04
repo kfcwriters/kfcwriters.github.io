@@ -5,52 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Best Practices for Preparing a Medical Manuscript for Journal Submission</title>
     <style>
-        body { font-family: Georgia, serif; max-width: 800px; margin: 40px auto; padding: 0 20px; line-height: 1.6; }
-        h1 { color: #0d47a1; }
-        .meta { color: #666; font-size: 0.9em; margin-bottom: 20px; }
-        .content { font-size: 1.1em; white-space: pre-line; }
-        .citation { font-size: 0.9em; color: #555; margin-top: 20px; padding: 10px; background: #f0f0f0; border-radius: 5px; }
-        .disclaimer { font-size: 0.8em; color: #888; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif; background: #f8fafc; color: #1e293b; }
+        .article-header { background: linear-gradient(135deg, #1e3a5f, #0d47a1); color: white; padding: 50px 20px 40px; text-align: center; }
+        .article-header h1 { font-size: 2.2em; font-weight: 700; margin-bottom: 15px; line-height: 1.3; }
+        .article-header .meta { font-size: 1em; opacity: 0.9; }
+        .container { max-width: 800px; margin: 0 auto; padding: 30px 20px; }
+        .content { background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 30px; border: 1px solid #e2e8f0; }
+        .content h2 { color: #0d47a1; margin: 25px 0 15px; font-size: 1.5em; }
+        .content p { margin-bottom: 15px; line-height: 1.7; }
+        .content ol, .content ul { margin-left: 25px; margin-bottom: 15px; }
+        .content li { margin-bottom: 8px; }
+        .citation-box { background: #f1f5f9; border-left: 4px solid #0d47a1; padding: 15px 20px; margin-top: 30px; border-radius: 0 8px 8px 0; }
+        .citation-box strong { color: #0d47a1; }
+        .disclaimer { text-align: center; color: #64748b; font-size: 0.85em; margin-top: 20px; }
+        .footer { text-align: center; padding: 30px 20px; color: #64748b; font-size: 0.85em; border-top: 1px solid #e2e8f0; margin-top: 40px; }
+        .footer a { color: #0d47a1; text-decoration: none; }
+        @media (max-width: 600px) { .article-header h1 { font-size: 1.6em; } }
     </style>
 </head>
 <body>
-    <h1>Best Practices for Preparing a Medical Manuscript for Journal Submission</h1>
-    <p class="meta"><strong>Published:</strong> 2026-06-04 | <strong>Journal:</strong> Knowledge Framework Consulting Journal of Medical Writing Reviews | <strong>Author:</strong> Abhishek Bansal</p>
-    <hr>
-    <div class="content">
-        <h2>Introduction</h2>
-        <p>Publishing a medical manuscript in a peer‑reviewed journal is the cornerstone of academic communication. Yet, even experienced authors face rejection due to poor manuscript preparation, unclear writing, or failure to follow journal guidelines. This review synthesizes current best practices to help researchers improve manuscript quality and increase the likelihood of acceptance.</p>
-
-        <h2>Pre‑Writing Phase: Choosing the Right Journal and Understanding Guidelines</h2>
-        <p>Before writing a single word, selecting the appropriate journal is critical. Authors should consider the journal’s scope, audience, impact factor, and indexing status (e.g., PubMed, Scopus). Once a target journal is chosen, carefully reading the “Instructions for Authors” is mandatory. Many rejections occur simply because formatting requirements were ignored. Key elements include word limits, reference style, abstract structure, and ethical declarations.</p>
-
-        <h2>Structuring the Manuscript: IMRaD Format</h2>
-        <p>The standard IMRaD structure (Introduction, Methods, Results, and Discussion) remains the backbone of most medical articles. The Introduction should clearly state the research question and its importance. The Methods section must provide enough detail for reproducibility, including study design, participants, interventions, and statistical analyses. The Results section should present findings objectively without interpretation. Finally, the Discussion should interpret the results in the context of existing literature, acknowledge limitations, and suggest future directions.</p>
-
-        <h2>Writing Style and Clarity</h2>
-        <p>Medical writing demands precision, brevity, and clarity. Avoid jargon that may confuse reviewers from other disciplines. Use active voice where possible, keep sentences short, and define acronyms on first use. The abstract is often the only part read by editors and reviewers; it must succinctly summarize the entire study. A well‑written cover letter that explains the significance of the work can also influence editorial decisions.</p>
-
-        <h2>Data Presentation and Visuals</h2>
-        <p>Tables and figures should be self‑explanatory and not merely repeat the text. Ensure all images are high resolution and all charts are properly labeled. Statistical data must be reported according to standard guidelines (e.g., CONSORT for trials, STROBE for observational studies). Transparency in data reporting enhances credibility and reduces the risk of desk rejection.</p>
-
-        <h2>Ethical Considerations and Plagiarism</h2>
-        <p>All manuscripts must comply with ethical guidelines, including patient consent, institutional review board approval, and conflict‑of‑interest disclosures. Plagiarism—whether intentional or accidental—is grounds for immediate rejection and can damage a researcher’s reputation. Using plagiarism‑detection software before submission is highly recommended.</p>
-
-        <h2>Conclusion</h2>
-        <p>Successful manuscript preparation requires meticulous planning, adherence to journal guidelines, and clear, ethical writing. By following these best practices, authors can significantly reduce the risk of rejection and contribute meaningfully to the medical literature. The Knowledge Framework Consulting Journal of Medical Writing Reviews encourages researchers to submit original reviews and case reports that adhere to these standards.</p>
-
-        <h2>References</h2>
-        <ol>
-            <li>International Committee of Medical Journal Editors. Recommendations for the Conduct, Reporting, Editing, and Publication of Scholarly Work in Medical Journals. Updated 2024.</li>
-            <li>Schulz KF, Altman DG, Moher D. CONSORT 2010 statement: updated guidelines for reporting parallel group randomised trials. BMJ. 2010;340:c332.</li>
-            <li>Vandenbroucke JP, et al. Strengthening the Reporting of Observational Studies in Epidemiology (STROBE): explanation and elaboration. PLoS Med. 2007;4(10):e297.</li>
-            <li>Gastel B, Day RA. How to Write and Publish a Scientific Paper. 8th ed. Greenwood; 2016.</li>
-        </ol>
+    <div class="article-header">
+        <h1>Best Practices for Preparing a Medical Manuscript for Journal Submission</h1>
+        <p class="meta">
+            <strong>Published:</strong> 2026-06-04 &nbsp;|&nbsp;
+            <strong>Journal:</strong> Global Journal of Medical Research &nbsp;|&nbsp;
+            <strong>Publisher:</strong> Knowledge Framework Consulting &nbsp;|&nbsp;
+            <strong>Author:</strong> Abhishek Bansal
+        </p>
     </div>
-    <div class="citation">
-        <strong>How to Cite This Article:</strong><br>
-        Abhishek Bansal. (2026, June 4). Best Practices for Preparing a Medical Manuscript for Journal Submission. <em>Knowledge Framework Consulting Journal of Medical Writing Reviews</em>. Retrieved from https://kfcwriters.github.io/reviews/review-2026-06-04.html
+    <div class="container">
+        <div class="content">
+            <h2>Introduction</h2>
+            <p>Publishing a medical manuscript in a peer‑reviewed journal is the cornerstone of academic communication. Yet, even experienced authors face rejection due to poor manuscript preparation, unclear writing, or failure to follow journal guidelines. This review synthesizes current best practices to help researchers improve manuscript quality and increase the likelihood of acceptance.</p>
+
+            <h2>Pre‑Writing Phase: Choosing the Right Journal and Understanding Guidelines</h2>
+            <p>Before writing a single word, selecting the appropriate journal is critical. Authors should consider the journal's scope, audience, impact factor, and indexing status (e.g., PubMed, Scopus). Once a target journal is chosen, carefully reading the "Instructions for Authors" is mandatory. Many rejections occur simply because formatting requirements were ignored. Key elements include word limits, reference style, abstract structure, and ethical declarations.</p>
+
+            <h2>Structuring the Manuscript: IMRaD Format</h2>
+            <p>The standard IMRaD structure (Introduction, Methods, Results, and Discussion) remains the backbone of most medical articles. The Introduction should clearly state the research question and its importance. The Methods section must provide enough detail for reproducibility, including study design, participants, interventions, and statistical analyses. The Results section should present findings objectively without interpretation. Finally, the Discussion should interpret the results in the context of existing literature, acknowledge limitations, and suggest future directions.</p>
+
+            <h2>Writing Style and Clarity</h2>
+            <p>Medical writing demands precision, brevity, and clarity. Avoid jargon that may confuse reviewers from other disciplines. Use active voice where possible, keep sentences short, and define acronyms on first use. The abstract is often the only part read by editors and reviewers; it must succinctly summarize the entire study. A well‑written cover letter that explains the significance of the work can also influence editorial decisions.</p>
+
+            <h2>Data Presentation and Visuals</h2>
+            <p>Tables and figures should be self‑explanatory and not merely repeat the text. Ensure all images are high resolution and all charts are properly labeled. Statistical data must be reported according to standard guidelines (e.g., CONSORT for trials, STROBE for observational studies). Transparency in data reporting enhances credibility and reduces the risk of desk rejection.</p>
+
+            <h2>Ethical Considerations and Plagiarism</h2>
+            <p>All manuscripts must comply with ethical guidelines, including patient consent, institutional review board approval, and conflict‑of‑interest disclosures. Plagiarism—whether intentional or accidental—is grounds for immediate rejection and can damage a researcher's reputation. Using plagiarism‑detection software before submission is highly recommended.</p>
+
+            <h2>Conclusion</h2>
+            <p>Successful manuscript preparation requires meticulous planning, adherence to journal guidelines, and clear, ethical writing. By following these best practices, authors can significantly reduce the risk of rejection and contribute meaningfully to the medical literature. The Global Journal of Medical Research, published by Knowledge Framework Consulting, encourages researchers to submit original reviews and case reports that adhere to these standards.</p>
+
+            <h2>References</h2>
+            <ol>
+                <li>International Committee of Medical Journal Editors. Recommendations for the Conduct, Reporting, Editing, and Publication of Scholarly Work in Medical Journals. Updated 2024.</li>
+                <li>Schulz KF, Altman DG, Moher D. CONSORT 2010 statement: updated guidelines for reporting parallel group randomised trials. BMJ. 2010;340:c332.</li>
+                <li>Vandenbroucke JP, et al. Strengthening the Reporting of Observational Studies in Epidemiology (STROBE): explanation and elaboration. PLoS Med. 2007;4(10):e297.</li>
+                <li>Gastel B, Day RA. How to Write and Publish a Scientific Paper. 8th ed. Greenwood; 2016.</li>
+            </ol>
+        </div>
+        <div class="citation-box">
+            <strong>How to Cite This Article:</strong><br>
+            Abhishek Bansal. (2026, June 4). Best Practices for Preparing a Medical Manuscript for Journal Submission. <em>Global Journal of Medical Research</em>, Knowledge Framework Consulting. Retrieved from https://kfcwriters.github.io/reviews/review-2026-06-04.html
+        </div>
+        <p class="disclaimer">This article is an original review. The information provided is for educational purposes and should not replace direct consultation of the cited sources.</p>
     </div>
-    <p class="disclaimer">This article is an original review. The information provided is for educational purposes and should not replace direct consultation of the cited sources.</p>
+    <div class="footer">
+        <p>© 2026 Knowledge Framework Consulting. All rights reserved.</p>
+        <p><a href="https://kfcwriters.github.io">Visit our main site</a> | <a href="mailto:kfcwriters@gmail.com">Contact</a></p>
+    </div>
 </body>
 </html>
