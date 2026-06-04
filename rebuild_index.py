@@ -1,5 +1,4 @@
 import os, sys, json, base64, requests, logging, re
-from io import BytesIO
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout,
                     format='%(asctime)s - %(levelname)s - %(message)s')
@@ -26,7 +25,6 @@ def get_files():
     return []
 
 def extract_title(download_url):
-    """Fetch an HTML file and return the content of the <title> tag."""
     try:
         resp = requests.get(download_url, timeout=15)
         if resp.status_code == 200:
@@ -37,34 +35,69 @@ def extract_title(download_url):
         pass
     return None
 
+def extract_meta(download_url):
+    """Try to get the publication date from the article's meta line."""
+    try:
+        resp = requests.get(download_url, timeout=15)
+        if resp.status_code == 200:
+            match = re.search(r'<p class="meta">.*?<strong>Published:</strong>\s*([^|]+)', resp.text)
+            if match:
+                return match.group(1).strip()
+    except Exception:
+        pass
+    return ""
+
 def build_index(files):
-    links = []
+    cards = []
     for f in files:
-        # Try to get the real title from the file
         title = extract_title(f["download_url"])
         if not title:
-            # Fallback to a formatted date
             title = f["name"].replace("review-", "").replace(".html", "")
-        links.append(f'<li><a href="{f["name"]}">{title}</a></li>')
+        date_str = extract_meta(f["download_url"])
+        cards.append(f"""
+        <div class="article-card">
+            <h3><a href="{f['name']}">{title}</a></h3>
+            <div class="date">{date_str}</div>
+        </div>""")
 
-    links_html = "\n".join(links)
+    cards_html = "\n".join(cards)
     index_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Original Medical Reviews</title>
     <style>
-        body {{ font-family: Georgia, serif; max-width: 800px; margin: 40px auto; padding: 0 20px; }}
-        h1 {{ color: #0d47a1; }}
-        ul {{ list-style: none; padding: 0; }}
-        li {{ margin: 10px 0; }}
-        a {{ text-decoration: none; color: #0d47a1; }}
+        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+        body {{ font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif; background: #f8fafc; color: #1e293b; }}
+        .journal-header {{ background: linear-gradient(135deg, #1e3a5f, #0d47a1); color: white; padding: 50px 20px 40px; text-align: center; }}
+        .journal-header h1 {{ font-size: 2.5em; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.5px; }}
+        .journal-header .subtitle {{ font-size: 1.1em; opacity: 0.9; font-style: italic; }}
+        .container {{ max-width: 900px; margin: 0 auto; padding: 30px 20px; }}
+        .issn-badge {{ text-align: center; margin-bottom: 30px; color: #64748b; font-size: 0.9em; }}
+        .article-card {{ background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 25px; margin-bottom: 16px; border: 1px solid #e2e8f0; transition: box-shadow 0.2s; }}
+        .article-card:hover {{ box-shadow: 0 6px 20px rgba(0,0,0,0.1); }}
+        .article-card h3 {{ margin-bottom: 8px; font-size: 1.2em; }}
+        .article-card h3 a {{ color: #0d47a1; text-decoration: none; }}
+        .article-card h3 a:hover {{ text-decoration: underline; }}
+        .article-card .date {{ color: #64748b; font-size: 0.9em; }}
+        .footer {{ text-align: center; padding: 30px 20px; color: #64748b; font-size: 0.85em; border-top: 1px solid #e2e8f0; margin-top: 40px; }}
+        .footer a {{ color: #0d47a1; text-decoration: none; }}
     </style>
 </head>
 <body>
-    <h1>Original Medical Reviews</h1>
-    <p>Published by the Knowledge Framework Consulting Journal of Medical Writing Reviews.</p>
-    <ul>{links_html}</ul>
+    <div class="journal-header">
+        <h1>Original Medical Reviews</h1>
+        <p class="subtitle">Published by the Knowledge Framework Consulting Journal of Medical Writing Reviews</p>
+    </div>
+    <div class="container">
+        <div class="issn-badge">ISSN: Coming soon</div>
+        {cards_html}
+    </div>
+    <div class="footer">
+        <p>© 2026 Knowledge Framework Consulting. All rights reserved.</p>
+        <p><a href="https://kfcwriters.github.io">Visit our main site</a> | <a href="mailto:kfcwriters@gmail.com">Contact</a></p>
+    </div>
 </body>
 </html>"""
     return index_html
@@ -76,7 +109,7 @@ def upload_index(html_content):
     if resp.status_code == 200:
         sha = resp.json()["sha"]
     payload = {
-        "message": "Update review index",
+        "message": "Update review index with modern design",
         "content": base64.b64encode(html_content.encode()).decode(),
         "branch": BRANCH
     }
