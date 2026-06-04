@@ -80,6 +80,9 @@ def build_index(files):
         .article-card h3 a {{ color: #0d47a1; text-decoration: none; }}
         .article-card h3 a:hover {{ text-decoration: underline; }}
         .article-card .date {{ color: #64748b; font-size: 0.9em; }}
+        .contact-info {{ background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 25px; margin-top: 30px; border: 1px solid #e2e8f0; }}
+        .contact-info h2 {{ color: #0d47a1; margin-bottom: 15px; }}
+        .contact-info p {{ margin-bottom: 8px; }}
         .footer {{ text-align: center; padding: 30px 20px; color: #64748b; font-size: 0.85em; border-top: 1px solid #e2e8f0; margin-top: 40px; }}
         .footer a {{ color: #0d47a1; text-decoration: none; }}
     </style>
@@ -92,6 +95,14 @@ def build_index(files):
     <div class="container">
         <div class="issn-badge">ISSN: Coming soon</div>
         {cards_html}
+        <div class="contact-info">
+            <h2>Contact Information</h2>
+            <p><strong>Publisher:</strong> Knowledge Framework Consulting</p>
+            <p><strong>Editor-in-Chief:</strong> Abhishek Bansal</p>
+            <p><strong>Email:</strong> kfcwriters@gmail.com</p>
+            <p><strong>Phone:</strong> +91 9812018036</p>
+            <p><strong>Address:</strong> [Please provide your address – can be city/state or office address]</p>
+        </div>
     </div>
     <div class="footer">
         <p>© 2026 Knowledge Framework Consulting. All rights reserved.</p>
@@ -108,7 +119,7 @@ def upload_index(html_content):
     if resp.status_code == 200:
         sha = resp.json()["sha"]
     payload = {
-        "message": "Update review index with new journal name",
+        "message": "Update review index with contact details",
         "content": base64.b64encode(html_content.encode()).decode(),
         "branch": BRANCH
     }
