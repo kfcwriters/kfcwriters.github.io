@@ -36,7 +36,6 @@ def extract_title(download_url):
     return None
 
 def extract_meta(download_url):
-    """Try to get the publication date from the article's meta line."""
     try:
         resp = requests.get(download_url, timeout=15)
         if resp.status_code == 200:
@@ -66,7 +65,7 @@ def build_index(files):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Original Medical Reviews</title>
+    <title>Global Journal of Medical Research</title>
     <style>
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
         body {{ font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif; background: #f8fafc; color: #1e293b; }}
@@ -87,8 +86,8 @@ def build_index(files):
 </head>
 <body>
     <div class="journal-header">
-        <h1>Original Medical Reviews</h1>
-        <p class="subtitle">Published by the Knowledge Framework Consulting Journal of Medical Writing Reviews</p>
+        <h1>Global Journal of Medical Research</h1>
+        <p class="subtitle">Published by Knowledge Framework Consulting</p>
     </div>
     <div class="container">
         <div class="issn-badge">ISSN: Coming soon</div>
@@ -109,7 +108,7 @@ def upload_index(html_content):
     if resp.status_code == 200:
         sha = resp.json()["sha"]
     payload = {
-        "message": "Update review index with modern design",
+        "message": "Update review index with new journal name",
         "content": base64.b64encode(html_content.encode()).decode(),
         "branch": BRANCH
     }
