@@ -3,7 +3,6 @@ import datetime
 import random
 import re
 
-# ========== RANDOMISED CONTENT TEMPLATES ==========
 TOPICS = [
     "Recent Advances in Acne Treatment",
     "Novel Therapies for Type 2 Diabetes Mellitus",
@@ -47,14 +46,11 @@ CONCLUSION_TEMPLATES = [
 def generate_review(today, topic):
     seed = today.toordinal()
     random.seed(seed)
-
     topic_lower = topic.lower()
-
     intro = random.choice(INTRO_TEMPLATES).format(topic=topic, topic_lower=topic_lower)
     evidence = random.choice(EVIDENCE_TEMPLATES)
     implications = random.choice(IMPLICATION_TEMPLATES)
     conclusion = random.choice(CONCLUSION_TEMPLATES).format(topic=topic, topic_lower=topic_lower)
-
     body = f"""
 **{topic}**
 
@@ -162,7 +158,6 @@ def generate_article():
 </html>"""
 
     html_content = html_template.format(topic=topic, date_str=date_str, body_html=body_html)
-
     os.makedirs("Journal", exist_ok=True)
     filename = f"Journal/review-{date_str}.html"
     with open(filename, "w", encoding="utf-8") as f:
