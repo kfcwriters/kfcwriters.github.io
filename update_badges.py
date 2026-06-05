@@ -16,12 +16,10 @@ def main():
         print("Sidebar not found in index.html")
         return
 
-    # Remove existing badge section if present
     existing = sidebar.find("div", class_="journal-badges")
     if existing:
         existing.decompose()
 
-    # Build badge HTML (you can customise the text)
     badges_html = """
     <div class="journal-badges" style="margin: 20px 0;">
         <h3>Journal Credentials</h3>
@@ -34,7 +32,6 @@ def main():
     </div>
     """
     new_badges = BeautifulSoup(badges_html, "html.parser")
-    # Insert after the "Journal Information" heading or at the top of sidebar
     info_heading = sidebar.find("h3", string="Journal Information")
     if info_heading:
         info_heading.insert_after(new_badges)
