@@ -15,9 +15,8 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install dependencies
-        run: pip install requests beautifulsoup4
+        run: pip install requests
       - name: Generate article
-        id: gen
         run: python generate_article.py
       - name: Get current date
         id: date
@@ -29,21 +28,10 @@ jobs:
           name: "Article ${{ steps.date.outputs.DATE }}"
           generate_release_notes: false
           make_latest: false
-      - name: Wait for Zenodo to process
-        run: sleep 90
-      - name: Fetch DOI
-        id: doi
-        env:
-          RELEASE_TAG: "article-${{ steps.date.outputs.DATE }}"
-        run: python fetch_doi.py
-      - name: Inject DOI into article
-        run: python inject_doi.py
-      - name: Update homepage badges
-        run: python update_badges.py
-      - name: Commit changes
+      - name: Commit article
         run: |
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
-          git add Journal/ doi_cache.json
-          git diff --quiet && git diff --staged --quiet || git commit -m "Add DOI to article ${{ steps.date.outputs.DATE }}"
+          git add Journal/
+          git diff --quiet && git diff --staged --quiet || git commit -m "Daily article ${{ steps.date.outputs.DATE }}"
           git push
