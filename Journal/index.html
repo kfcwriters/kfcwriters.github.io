@@ -4,80 +4,134 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Journal of Medical Research</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1e2a3a; line-height: 1.5; }
+        .navbar { background: #0d47a1; padding: 15px 20px; text-align: center; position: sticky; top: 0; z-index: 100; }
+        .navbar a { color: white; text-decoration: none; margin: 0 15px; font-weight: 500; }
+        .journal-header { background: linear-gradient(135deg, #0a2b4e, #1e4a76); color: white; text-align: center; padding: 50px 20px; }
+        .journal-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; display: flex; flex-wrap: wrap; gap: 30px; }
+        .main { flex: 3; background: white; border-radius: 16px; padding: 35px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .sidebar { flex: 1; background: white; border-radius: 16px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); align-self: start; }
+        .sidebar h3 { background: #0d47a1; color: white; padding: 10px; margin: -25px -25px 20px -25px; border-radius: 16px 16px 0 0; }
+        .volume { margin-bottom: 30px; }
+        .volume h2 { color: #0d47a1; border-bottom: 2px solid #0d47a1; padding-bottom: 8px; margin-bottom: 15px; }
+        .issue { margin-left: 20px; margin-bottom: 20px; }
+        .issue h3 { color: #1e4a76; margin-bottom: 10px; }
+        .article-list { list-style: none; padding-left: 20px; }
+        .article-list li { margin: 10px 0; }
+        .article-list a { color: #0d47a1; text-decoration: none; font-weight: 500; }
+        .article-list a:hover { text-decoration: underline; }
+        .article-list .date { color: #6c7a89; font-size: 0.85rem; margin-left: 10px; }
+        .footer { background: #0f2a38; color: #8aaec0; text-align: center; padding: 20px; margin-top: 30px; }
+        .footer a { color: #ffaa33; }
+        @media (max-width: 800px) { .container { flex-direction: column; } }
+    </style>
 </head>
-<body style="margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f0f4f8; color:#1e2a3a;">
-
-<!-- Navigation Bar -->
-<div style="background:#0a2b4e; padding:15px 20px; text-align:center; position:sticky; top:0; z-index:100;">
-    <a href="index.html" style="color:white; text-decoration:none; margin:0 15px; font-weight:500;">Home</a>
-    <a href="aims-scope.html" style="color:white; text-decoration:none; margin:0 15px; font-weight:500;">Aims & Scope</a>
-    <a href="editorial-board.html" style="color:white; text-decoration:none; margin:0 15px; font-weight:500;">Editorial Board</a>
-    <a href="author-guidelines.html" style="color:white; text-decoration:none; margin:0 15px; font-weight:500;">Author Guidelines</a>
-    <a href="submit.html" style="color:white; text-decoration:none; margin:0 15px; font-weight:500;">Submit Article</a>
-</div>
-
-<!-- Header -->
-<div style="background:linear-gradient(135deg, #0a2b4e, #1e4a76); color:white; text-align:center; padding:50px 20px;">
-    <h1 style="margin:0; font-size:2.8rem;">Global Journal of Medical Research</h1>
-    <p style="margin:10px 0 0; font-size:1.2rem;">Published by Knowledge Framework Consulting</p>
-    <div style="margin-top:15px; font-size:0.9rem;">ISSN: Applied for | Volume 1, Issue 1 | June 2026</div>
-</div>
-
-<!-- Main Container -->
-<div style="max-width:1100px; margin:30px auto; padding:0 20px; display:flex; flex-wrap:wrap; gap:30px;">
-
-    <!-- Main Content (Articles) -->
-    <div style="flex:3; min-width:250px;">
-        <!-- Article Card 1 -->
-        <div style="background:white; border-radius:16px; padding:25px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.05); border-left:5px solid #0a2b4e;">
-            <h3 style="margin:0 0 8px; font-size:1.4rem;"><a href="review-2026-06-04.html" style="color:#0a2b4e; text-decoration:none;">Best Practices for Preparing a Medical Manuscript for Journal Submission</a></h3>
-            <div style="color:#5a7e9a; font-size:0.85rem; margin-bottom:10px;">Abhishek Bansal | June 4, 2026</div>
-            <p style="color:#2c3e44; line-height:1.6;">A step-by-step guide to manuscript preparation, including formatting, ethical considerations, and journal selection strategies.</p>
+<body>
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="aims-scope.html">Aims & Scope</a>
+        <a href="editorial-board.html">Editorial Board</a>
+        <a href="author-guidelines.html">Author Guidelines</a>
+        <a href="submit.html">Submit Article</a>
+    </div>
+    <div class="journal-header">
+        <h1>Global Journal of Medical Research</h1>
+        <p>Published by Knowledge Framework Consulting | ISSN: Applied for</p>
+    </div>
+    <div class="container">
+        <div class="main" id="main-content">
+            <p style="text-align: center;">Loading articles...</p>
         </div>
-        <!-- Repeat for other articles -->
-        <div style="background:white; border-radius:16px; padding:25px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.05); border-left:5px solid #0a2b4e;">
-            <h3 style="margin:0 0 8px; font-size:1.4rem;"><a href="review-2026-06-05.html" style="color:#0a2b4e; text-decoration:none;">How to Write a Strong Abstract for Medical Journals</a></h3>
-            <div style="color:#5a7e9a; font-size:0.85rem; margin-bottom:10px;">Priya Sharma | June 5, 2026</div>
-            <p style="color:#2c3e44; line-height:1.6;">Key elements of a compelling abstract, with examples and common pitfalls to avoid.</p>
-        </div>
-        <div style="background:white; border-radius:16px; padding:25px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.05); border-left:5px solid #0a2b4e;">
-            <h3 style="margin:0 0 8px; font-size:1.4rem;"><a href="review-2026-06-06.html" style="color:#0a2b4e; text-decoration:none;">Common Mistakes in Case Report Writing and How to Avoid Them</a></h3>
-            <div style="color:#5a7e9a; font-size:0.85rem; margin-bottom:10px;">Rajiv Menon | June 6, 2026</div>
-            <p style="color:#2c3e44; line-height:1.6;">Analysis of frequent errors in case report writing and practical advice for improving clarity and impact.</p>
-        </div>
-        <div style="background:white; border-radius:16px; padding:25px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.05); border-left:5px solid #0a2b4e;">
-            <h3 style="margin:0 0 8px; font-size:1.4rem;"><a href="review-2026-06-07.html" style="color:#0a2b4e; text-decoration:none;">Literature Review Strategies for Medical Researchers</a></h3>
-            <div style="color:#5a7e9a; font-size:0.85rem; margin-bottom:10px;">Neha Gupta | June 7, 2026</div>
-            <p style="color:#2c3e44; line-height:1.6;">Effective methods for conducting systematic and scoping reviews, including database selection and synthesis techniques.</p>
-        </div>
-        <div style="background:white; border-radius:16px; padding:25px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.05); border-left:5px solid #0a2b4e;">
-            <h3 style="margin:0 0 8px; font-size:1.4rem;"><a href="review-2026-06-08.html" style="color:#0a2b4e; text-decoration:none;">Journal Selection Strategies for Medical Manuscripts</a></h3>
-            <div style="color:#5a7e9a; font-size:0.85rem; margin-bottom:10px;">Vikram Singh | June 8, 2026</div>
-            <p style="color:#2c3e44; line-height:1.6;">A framework for identifying the right journal for your research, considering impact factor, open access options, and turnaround times.</p>
+        <div class="sidebar">
+            <h3>Journal Information</h3>
+            <p><strong>Publisher:</strong> Knowledge Framework Consulting</p>
+            <p><strong>Co-Chief Editors:</strong> Abhishek Bansal & Dr. Praveen Parshant</p>
+            <p><strong>Email:</strong> kfcwriters@gmail.com</p>
+            <p><strong>Phone:</strong> +91 9812018036</p>
+            <hr>
+            <h3>For Authors</h3>
+            <ul>
+                <li><a href="aims-scope.html">Aims & Scope</a></li>
+                <li><a href="author-guidelines.html">Author Guidelines</a></li>
+                <li><a href="submit.html">Submit an Article</a></li>
+            </ul>
         </div>
     </div>
-
-    <!-- Sidebar -->
-    <div style="flex:1; min-width:220px; background:white; border-radius:16px; padding:25px; box-shadow:0 2px 8px rgba(0,0,0,0.05); align-self:start;">
-        <h3 style="background:#0a2b4e; color:white; padding:10px; margin:-25px -25px 20px -25px; border-radius:16px 16px 0 0;">Journal Information</h3>
-        <p><strong>Publisher:</strong> Knowledge Framework Consulting</p>
-        <p><strong>Editor-in-Chief:</strong> Abhishek Bansal</p>
-        <p><strong>Email:</strong> kfcwriters@gmail.com</p>
-        <p><strong>Phone:</strong> +91 9812018036</p>
-        <hr>
-        <h3>For Authors</h3>
-        <ul style="padding-left:20px;">
-            <li><a href="aims-scope.html" style="color:#0a2b4e;">Aims & Scope</a></li>
-            <li><a href="author-guidelines.html" style="color:#0a2b4e;">Author Guidelines</a></li>
-            <li><a href="submit.html" style="color:#0a2b4e;">Submit an Article</a></li>
-        </ul>
+    <div class="footer">
+        <p>© 2026 Knowledge Framework Consulting. All rights reserved. | <a href="https://kfcwriters.github.io">Main Site</a> | <a href="mailto:kfcwriters@gmail.com">Contact</a></p>
     </div>
-</div>
 
-<!-- Footer -->
-<div style="background:#0f2a38; color:#8aaec0; text-align:center; padding:20px; margin-top:30px; font-size:0.85rem;">
-    <p style="margin:0;">© 2026 Knowledge Framework Consulting. All rights reserved. | <a href="https://kfcwriters.github.io" style="color:#ffaa33;">Main Site</a> | <a href="mailto:kfcwriters@gmail.com" style="color:#ffaa33;">Contact</a></p>
-</div>
-
+    <script>
+        const repo = 'kfcwriters/kfcwriters.github.io';
+        const folder = 'Journal';
+        const apiUrl = `https://api.github.com/repos/${repo}/contents/${folder}`;
+        
+        fetch(apiUrl)
+            .then(res => res.json())
+            .then(files => {
+                const reviewFiles = files.filter(f => f.name.startsWith('review-') && f.name.endsWith('.html'));
+                const promises = reviewFiles.map(file => 
+                    fetch(file.download_url).then(res => res.text()).then(html => {
+                        const titleMatch = html.match(/<title>(.*?)<\/title>/i);
+                        let title = titleMatch ? titleMatch[1] : file.name.replace('.html', '');
+                        // Clean up title if it contains " – Global Journal..."
+                        if (title.includes('–')) title = title.split('–')[0].trim();
+                        const dateMatch = file.name.match(/review-(\d{4})-(\d{2})-(\d{2})/);
+                        if (dateMatch) {
+                            return {
+                                year: parseInt(dateMatch[1]),
+                                month: parseInt(dateMatch[2]),
+                                day: parseInt(dateMatch[3]),
+                                title: title,
+                                url: file.name,
+                                filename: file.name
+                            };
+                        }
+                        return null;
+                    })
+                );
+                return Promise.all(promises);
+            })
+            .then(articles => {
+                articles = articles.filter(a => a !== null);
+                if (articles.length === 0) {
+                    document.getElementById('main-content').innerHTML = '<p>No articles published yet.</p>';
+                    return;
+                }
+                // Group by year and month
+                const volumes = {};
+                articles.forEach(art => {
+                    if (!volumes[art.year]) volumes[art.year] = {};
+                    if (!volumes[art.year][art.month]) volumes[art.year][art.month] = [];
+                    volumes[art.year][art.month].push(art);
+                });
+                // Sort years descending, months descending
+                const sortedYears = Object.keys(volumes).sort((a,b) => b - a);
+                let html = '';
+                for (let year of sortedYears) {
+                    html += `<div class="volume"><h2>Volume ${year}</h2>`;
+                    const months = volumes[year];
+                    const sortedMonths = Object.keys(months).sort((a,b) => b - a);
+                    for (let month of sortedMonths) {
+                        const monthName = new Date(year, month-1, 1).toLocaleString('default', { month: 'long' });
+                        html += `<div class="issue"><h3>Issue ${month} – ${monthName} ${year}</h3><ul class="article-list">`;
+                        const monthArticles = months[month].sort((a,b) => b.day - a.day);
+                        monthArticles.forEach(art => {
+                            html += `<li><a href="${art.url}">${art.title}</a> <span class="date">(${art.year}-${art.month}-${art.day})</span></li>`;
+                        });
+                        html += `</ul></div>`;
+                    }
+                    html += `</div>`;
+                }
+                document.getElementById('main-content').innerHTML = html;
+            })
+            .catch(err => {
+                document.getElementById('main-content').innerHTML = '<p>Error loading articles. Please refresh the page.</p>';
+                console.error(err);
+            });
+    </script>
 </body>
 </html>
