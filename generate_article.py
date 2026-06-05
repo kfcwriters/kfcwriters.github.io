@@ -28,7 +28,7 @@ def generate_review():
     ]
     intro = intro_variations[seed % len(intro_variations)]
     
-    review = f"""**{topic}**
+    review_text = f"""**{topic}**
 
 **Introduction**  
 {intro} We focus on high‑quality studies published within the last three years.
@@ -53,10 +53,24 @@ Ongoing research continues to refine our approach to {topic.lower()}. Future dir
 4. Garcia M, et al. Safety profile of emerging treatments. BMJ. 2025;378:e071234.
 5. Patel S, Nguyen T. Guidelines update. Eur Heart J. 2026;47(3):212‑25.
 """
-    return topic, review
+    return topic, review_text
 
 def create_html(topic, content, date_str):
-    return f"""<!DOCTYPE html>
+    # Replace markdown-style bold and convert double newlines to paragraph breaks
+    content_html = content.replace('**', '<strong>').replace('**', '</strong>', 1)  # simple, but we need to handle pairs
+    # Better: replace each pair
+    import re
+    content_html = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', content)
+    content_html = content_html.replace('\n\n', '</p><p>')
+    content_html = '<p>' + content_html + '</p>'
+    # Fix lists (lines starting with "- ")
+    content_html = re.sub(r'<p>- ', '<ul><li>', content_html)
+    content_html = content_html.replace(' - ', '</li><li>')
+    content_html = content_html.replace('</p><p></p>', '')
+    # Simple cleanup
+    content_html = content_html.replace('</p><ul>', '<ul>').replace('</ul><p>', '</ul>')
+    
+    html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -94,7 +108,7 @@ def create_html(topic, content, date_str):
             <h1>{topic}</h1>
             <div class="meta">Published: {date_str} | Co-Chief Editors: Abhishek Bansal & Dr. Praveen Parshant</div>
             <div style="font-family: Georgia, serif; line-height: 1.7;">
-                {content.replace('**', '<strong>').replace('\\n\\n', '</p><p>')}
+                {content_html}
             </div>
         </div>
     </div>
@@ -103,6 +117,7 @@ def create_html(topic, content, date_str):
     </div>
 </body>
 </html>"""
+    return html
 
 def main():
     today = datetime.datetime.utcnow()
