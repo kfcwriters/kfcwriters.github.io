@@ -4,8 +4,6 @@ import random
 import re
 
 # ========== RANDOMISED CONTENT TEMPLATES ==========
-# Each section has multiple variants; the script picks one based on daily seed.
-
 TOPICS = [
     "Recent Advances in Acne Treatment",
     "Novel Therapies for Type 2 Diabetes Mellitus",
@@ -22,8 +20,8 @@ TOPICS = [
 INTRO_TEMPLATES = [
     "This comprehensive review synthesises the latest evidence on {topic}.",
     "Significant advances have recently emerged in the field of {topic}. This article summarises key findings.",
-    "Clinicians managing {topic.lower()} need up‑to‑date guidance. This review provides a practical overview.",
-    "The past year has seen remarkable progress in understanding and treating {topic.lower()}."
+    "Clinicians managing {topic_lower} need up‑to‑date guidance. This review provides a practical overview.",
+    "The past year has seen remarkable progress in understanding and treating {topic_lower}."
 ]
 
 EVIDENCE_TEMPLATES = [
@@ -43,21 +41,20 @@ IMPLICATION_TEMPLATES = [
 CONCLUSION_TEMPLATES = [
     "Ongoing research continues to refine our approach to {topic}. Future directions include personalised medicine strategies and long‑term safety data.",
     "While current evidence is promising, more head‑to‑head comparative trials are needed. Policy makers should facilitate access to novel therapies.",
-    "The evolving landscape of {topic.lower()} treatment requires continuous education. Clinicians are encouraged to consult updated guidelines regularly."
+    "The evolving landscape of {topic_lower} treatment requires continuous education. Clinicians are encouraged to consult updated guidelines regularly."
 ]
 
-# ========== GENERATE A UNIQUE REVIEW EACH DAY ==========
 def generate_review(today, topic):
-    # Use day-of-year as a seed for reproducible randomness
     seed = today.toordinal()
     random.seed(seed)
 
-    intro = random.choice(INTRO_TEMPLATES).format(topic=topic)
+    topic_lower = topic.lower()
+
+    intro = random.choice(INTRO_TEMPLATES).format(topic=topic, topic_lower=topic_lower)
     evidence = random.choice(EVIDENCE_TEMPLATES)
     implications = random.choice(IMPLICATION_TEMPLATES)
-    conclusion = random.choice(CONCLUSION_TEMPLATES).format(topic=topic)
+    conclusion = random.choice(CONCLUSION_TEMPLATES).format(topic=topic, topic_lower=topic_lower)
 
-    # Build the article body with Markdown-like formatting
     body = f"""
 **{topic}**
 
@@ -82,8 +79,38 @@ def generate_review(today, topic):
 """
     return body.strip()
 
-# ========== HTML TEMPLATE (matches your journal's design) ==========
-HTML_TEMPLATE = """<!DOCTYPE html>
+def markdown_to_html(text):
+    text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
+    lines = text.split('\n')
+    in_list = False
+    html_lines = []
+    for line in lines:
+        if line.strip().startswith('- '):
+            if not in_list:
+                html_lines.append('<ul>')
+                in_list = True
+            html_lines.append(f'<li>{line.strip()[2:]}</li>')
+        else:
+            if in_list:
+                html_lines.append('</ul>')
+                in_list = False
+            if line.strip():
+                html_lines.append(f'<p>{line.strip()}</p>')
+            else:
+                html_lines.append('')
+    if in_list:
+        html_lines.append('</ul>')
+    return '\n'.join(html_lines)
+
+def generate_article():
+    today = datetime.datetime.utcnow().date()
+    date_str = today.strftime("%Y-%m-%d")
+    idx = today.timetuple().tm_yday % len(TOPICS)
+    topic = TOPICS[idx]
+    body_md = generate_review(today, topic)
+    body_html = markdown_to_html(body_md)
+
+    html_template = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -134,44 +161,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 </body>
 </html>"""
 
-def markdown_to_html(text):
-    """Convert basic Markdown (bold, paragraphs, lists) to HTML."""
-    # Bold: **text** -> <strong>text</strong>
-    text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
-    # Convert lines starting with "- " to list items
-    lines = text.split('\n')
-    in_list = False
-    html_lines = []
-    for line in lines:
-        if line.strip().startswith('- '):
-            if not in_list:
-                html_lines.append('<ul>')
-                in_list = True
-            html_lines.append(f'<li>{line.strip()[2:]}</li>')
-        else:
-            if in_list:
-                html_lines.append('</ul>')
-                in_list = False
-            if line.strip():
-                html_lines.append(f'<p>{line.strip()}</p>')
-            else:
-                html_lines.append('')
-    if in_list:
-        html_lines.append('</ul>')
-    return '\n'.join(html_lines)
+    html_content = html_template.format(topic=topic, date_str=date_str, body_html=body_html)
 
-def generate_article():
-    today = datetime.datetime.utcnow().date()
-    date_str = today.strftime("%Y-%m-%d")
-    # Pick a topic based on day of the year (deterministic but rotates)
-    idx = today.timetuple().tm_yday % len(TOPICS)
-    topic = TOPICS[idx]
-    # Generate randomised review body
-    body_md = generate_review(today, topic)
-    body_html = markdown_to_html(body_md)
-    # Fill HTML template
-    html_content = HTML_TEMPLATE.format(topic=topic, date_str=date_str, body_html=body_html)
-    # Write file
     os.makedirs("Journal", exist_ok=True)
     filename = f"Journal/review-{date_str}.html"
     with open(filename, "w", encoding="utf-8") as f:
