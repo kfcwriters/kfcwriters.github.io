@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volumes & Issues – Global Journal of Medical Research</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1e2a3a; }
+        .navbar { background: #0d47a1; padding: 15px 20px; text-align: center; }
+        .navbar a { color: white; text-decoration: none; margin: 0 15px; font-weight: 500; }
+        .journal-header { background: linear-gradient(135deg, #0a2b4e, #1e4a76); color: white; text-align: center; padding: 50px 20px; }
+        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        .card { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .volume { margin-bottom: 30px; }
+        .volume h2 { color: #0d47a1; border-bottom: 2px solid #0d47a1; padding-bottom: 8px; margin-bottom: 15px; }
+        .issue { margin-left: 20px; margin-bottom: 20px; }
+        .issue h3 { color: #1e4a76; margin-bottom: 10px; }
+        .article-list { list-style: none; padding-left: 20px; }
+        .article-list li { margin: 8px 0; }
+        .article-list a { color: #0d47a1; text-decoration: none; }
+        .footer { background: #0f2a38; color: #8aaec0; text-align: center; padding: 20px; margin-top: 30px; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="aims-scope.html">Aims & Scope</a>
+        <a href="editorial-board.html">Editorial Board</a>
+        <a href="author-guidelines.html">Author Guidelines</a>
+        <a href="submit.html">Submit Article</a>
+        <a href="archive.html">Archives</a>
+    </div>
+    <div class="journal-header">
+        <h1>Global Journal of Medical Research</h1>
+        <p>Volumes & Issues</p>
+    </div>
+    <div class="container">
+        <div class="card" id="archive-content">
+            <p>Loading articles...</p>
+        </div>
+    </div>
+    <div class="footer">
+        <p>© 2026 Knowledge Framework Consulting</p>
+    </div>
+
+    <script>
+        // Get list of all review-*.html files in the current directory
+        const path = window.location.pathname;
+        const baseDir = path.substring(0, path.lastIndexOf('/') + 1);
+        
+        // We'll fetch the directory listing via GitHub API (public repo)
+        const repo = 'kfcwriters/kfcwriters.github.io';
+        const folder = 'Journal';
+        const apiUrl = `https://api.github.com/repos/${repo}/contents/${folder}`;
+        
+        fetch(apiUrl)
+            .then(res => res.json())
+            .then(files => {
+                const reviewFiles = files.filter(f => f.name.startsWith('review-') && f.name.endsWith('.html'));
+                // Extract date and title from each file (we need to fetch each file to get title)
+                const promises = reviewFiles.map(file => 
+                    fetch(file.download_url).then(res => res.text()).then(html => {
+                        const titleMatch = html.match(/<title>(.*?)<\/title>/i);
+                        const title = titleMatch ? titleMatch[1] : file.name;
+                        const dateMatch = file.name.match(/review-(\d{4})-(\d{2})-(\d{2})/);
+                        if (dateMatch) {
+                            return {
+                                year: parseInt(dateMatch[1]),
+                                month: parseInt(dateMatch[2]),
+                                day: parseInt(dateMatch[3]),
+                                title: title,
+                                url: file.name
+                            };
+                        }
+                        return null;
+                    })
+                );
+                return Promise.all(promises);
+            })
+            .then(articles => {
+                articles = articles.filter(a => a !== null);
+                // Group by year and month
+                const volumes = {};
+                articles.forEach(art => {
+                    if (!volumes[art.year]) volumes[art.year] = {};
+                    if (!volumes[art.year][art.month]) volumes[art.year][art.month] = [];
+                    volumes[art.year][art.month].push(art);
+                });
+                // Sort years descending, months descending
+                const sortedYears = Object.keys(volumes).sort((a,b) => b - a);
+                let html = '';
+                for (let year of sortedYears) {
+                    html += `<div class="volume"><h2>Volume ${year}</h2>`;
+                    const months = volumes[year];
+                    const sortedMonths = Object.keys(months).sort((a,b) => b - a);
+                    for (let month of sortedMonths) {
+                        const monthName = new Date(year, month-1, 1).toLocaleString('default', { month: 'long' });
+                        html += `<div class="issue"><h3>Issue ${month} – ${monthName} ${year}</h3><ul class="article-list">`;
+                        const monthArticles = months[month].sort((a,b) => b.day - a.day);
+                        monthArticles.forEach(art => {
+                            html += `<li><a href="${art.url}">${art.title}</a> (${art.year}-${art.month}-${art.day})</li>`;
+                        });
+                        html += `</ul></div>`;
+                    }
+                    html += `</div>`;
+                }
+                document.getElementById('archive-content').innerHTML = html;
+            })
+            .catch(err => {
+                document.getElementById('archive-content').innerHTML = '<p>Error loading articles. Please try again later.</p>';
+                console.error(err);
+            });
+    </script>
+</body>
+</html>
