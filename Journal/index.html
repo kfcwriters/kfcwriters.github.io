@@ -6,32 +6,163 @@
     <title>Global Journal of Medical Research</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1e2a3a; line-height: 1.5; }
-        .navbar { background: #0d47a1; padding: 15px 20px; text-align: center; position: sticky; top: 0; z-index: 100; }
-        .navbar a { color: white; text-decoration: none; margin: 0 15px; font-weight: 500; }
-        .navbar a:hover { text-decoration: underline; }
-        .journal-header { background: linear-gradient(135deg, #0a2b4e, #1e4a76); color: white; text-align: center; padding: 50px 20px; }
-        .journal-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
-        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; display: flex; flex-wrap: wrap; gap: 30px; }
-        .main { flex: 3; background: white; border-radius: 16px; padding: 35px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .sidebar { flex: 1; background: white; border-radius: 16px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); align-self: start; }
-        .sidebar h3 { background: #0d47a1; color: white; padding: 10px; margin: -25px -25px 20px -25px; border-radius: 16px 16px 0 0; }
-        .sidebar ul { padding-left: 20px; margin-top: 10px; }
-        .sidebar li { margin: 8px 0; }
-        .sidebar a { color: #0d47a1; text-decoration: none; }
-        .sidebar a:hover { text-decoration: underline; }
-        .volume { margin-bottom: 35px; }
-        .volume h2 { color: #0d47a1; border-bottom: 2px solid #0d47a1; padding-bottom: 8px; margin-bottom: 20px; font-size: 1.6rem; }
-        .issue { margin-left: 0; margin-bottom: 25px; }
-        .issue h3 { color: #1e4a76; margin-bottom: 12px; font-size: 1.3rem; border-left: 4px solid #0d47a1; padding-left: 12px; }
-        .article-list { list-style: none; padding-left: 20px; }
-        .article-list li { margin: 12px 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; }
-        .article-list a { color: #0d47a1; text-decoration: none; font-weight: 500; font-size: 1.05rem; }
-        .article-list a:hover { text-decoration: underline; color: #e67e22; }
-        .article-list .date { color: #6c7a89; font-size: 0.85rem; }
-        .footer { background: #0f2a38; color: #8aaec0; text-align: center; padding: 20px; margin-top: 30px; }
-        .footer a { color: #ffaa33; text-decoration: none; }
-        @media (max-width: 800px) { .container { flex-direction: column; } }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            color: #1e2a3a;
+            line-height: 1.5;
+        }
+        /* Navigation */
+        .navbar {
+            background: #0d47a1;
+            padding: 15px 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        /* Header */
+        .journal-header {
+            background: linear-gradient(135deg, #0a2b4e, #1e4a76);
+            color: white;
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .journal-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        /* Main container */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+        /* Main content (articles) */
+        .main {
+            flex: 3;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        /* Sidebar */
+        .sidebar {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            align-self: start;
+        }
+        .sidebar h3 {
+            background: #0d47a1;
+            color: white;
+            padding: 10px 15px;
+            margin: -25px -25px 20px -25px;
+            border-radius: 20px 20px 0 0;
+            font-size: 1.2rem;
+        }
+        .sidebar p {
+            margin: 12px 0;
+            line-height: 1.5;
+        }
+        .sidebar hr {
+            margin: 20px 0;
+            border: none;
+            border-top: 1px solid #e2e8f0;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+        .sidebar li {
+            margin: 10px 0;
+        }
+        .sidebar a {
+            color: #0d47a1;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+        /* Volume/Issue styling */
+        .volume {
+            margin-bottom: 30px;
+        }
+        .volume h2 {
+            color: #0d47a1;
+            border-bottom: 2px solid #0d47a1;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+        }
+        .issue {
+            margin-bottom: 25px;
+        }
+        .issue h3 {
+            color: #1e4a76;
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+            border-left: 4px solid #0d47a1;
+            padding-left: 12px;
+        }
+        .article-list {
+            list-style: none;
+            padding-left: 20px;
+        }
+        .article-list li {
+            margin: 12px 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 10px;
+        }
+        .article-list a {
+            color: #0d47a1;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        .article-list a:hover {
+            text-decoration: underline;
+            color: #e67e22;
+        }
+        .article-list .date {
+            color: #6c7a89;
+            font-size: 0.85rem;
+        }
+        /* Footer */
+        .footer {
+            background: #0f2a38;
+            color: #8aaec0;
+            text-align: center;
+            padding: 25px;
+            margin-top: 40px;
+        }
+        .footer a {
+            color: #ffaa33;
+            text-decoration: none;
+        }
+        /* Responsive */
+        @media (max-width: 800px) {
+            .container {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
@@ -83,7 +214,6 @@
                     fetch(file.download_url).then(res => res.text()).then(html => {
                         const titleMatch = html.match(/<title>(.*?)<\/title>/i);
                         let title = titleMatch ? titleMatch[1] : file.name.replace('.html', '');
-                        // Clean up title if it contains " – Global Journal..."
                         if (title.includes('–')) title = title.split('–')[0].trim();
                         const dateMatch = file.name.match(/review-(\d{4})-(\d{2})-(\d{2})/);
                         if (dateMatch) {
@@ -106,14 +236,12 @@
                     document.getElementById('main-content').innerHTML = '<p>No articles published yet.</p>';
                     return;
                 }
-                // Group by year and month
                 const volumes = {};
                 articles.forEach(art => {
                     if (!volumes[art.year]) volumes[art.year] = {};
                     if (!volumes[art.year][art.month]) volumes[art.year][art.month] = [];
                     volumes[art.year][art.month].push(art);
                 });
-                // Sort years descending, months descending
                 const sortedYears = Object.keys(volumes).sort((a,b) => b - a);
                 let html = '';
                 for (let year of sortedYears) {
