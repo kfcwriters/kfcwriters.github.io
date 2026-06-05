@@ -1,0 +1,30 @@
+name: Monthly Archive PDF
+on:
+  schedule:
+    - cron: '0 1 1 * *'   # 01:00 on day 1 of each month
+  workflow_dispatch:
+
+jobs:
+  create-archive:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install weasyprint beautifulsoup4
+      - name: Build HTML for previous month's issue
+        run: python scripts/build_issue_pdf.py
+      - name: Generate PDF
+        run: weasyprint issue.html issue.pdf
+      - name: Create GitHub Release for this issue
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "issue-${{ env.YEAR }}-${{ env.MONTH }}"
+          name: "Volume ${{ env.YEAR }}, Issue ${{ env.MONTH }} (Monthly Archive)"
+          files: issue.pdf
+          generate_release_notes: false
