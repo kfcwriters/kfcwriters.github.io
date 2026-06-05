@@ -12,7 +12,6 @@
             color: #1e2a3a;
             line-height: 1.5;
         }
-        /* Navigation */
         .navbar {
             background: #0d47a1;
             padding: 15px 20px;
@@ -27,21 +26,14 @@
             margin: 0 15px;
             font-weight: 500;
         }
-        .navbar a:hover {
-            text-decoration: underline;
-        }
-        /* Header */
+        .navbar a:hover { text-decoration: underline; }
         .journal-header {
             background: linear-gradient(135deg, #0a2b4e, #1e4a76);
             color: white;
             text-align: center;
             padding: 50px 20px;
         }
-        .journal-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        /* Main container */
+        .journal-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
         .container {
             max-width: 1200px;
             margin: 40px auto;
@@ -50,7 +42,6 @@
             flex-wrap: wrap;
             gap: 40px;
         }
-        /* Main content (articles) */
         .main {
             flex: 3;
             background: white;
@@ -58,7 +49,6 @@
             padding: 30px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
-        /* Sidebar */
         .sidebar {
             flex: 1;
             background: white;
@@ -75,7 +65,7 @@
             border-radius: 20px 20px 0 0;
             font-size: 1.2rem;
         }
-        .sidebar p {
+        .sidebar p, .sidebar li {
             margin: 12px 0;
             line-height: 1.5;
         }
@@ -86,20 +76,13 @@
         }
         .sidebar ul {
             list-style: none;
-            padding: 0;
-            margin: 10px 0;
-        }
-        .sidebar li {
-            margin: 10px 0;
+            padding-left: 0;
         }
         .sidebar a {
             color: #0d47a1;
             text-decoration: none;
         }
-        .sidebar a:hover {
-            text-decoration: underline;
-        }
-        /* Volume/Issue styling */
+        .sidebar a:hover { text-decoration: underline; }
         .volume {
             margin-bottom: 30px;
         }
@@ -135,7 +118,6 @@
             color: #0d47a1;
             text-decoration: none;
             font-weight: 500;
-            font-size: 1rem;
         }
         .article-list a:hover {
             text-decoration: underline;
@@ -145,23 +127,20 @@
             color: #6c7a89;
             font-size: 0.85rem;
         }
-        /* Footer */
         .footer {
             background: #0f2a38;
             color: #8aaec0;
             text-align: center;
             padding: 25px;
             margin-top: 40px;
+            font-size: 0.9rem;
         }
         .footer a {
             color: #ffaa33;
             text-decoration: none;
         }
-        /* Responsive */
         @media (max-width: 800px) {
-            .container {
-                flex-direction: column;
-            }
+            .container { flex-direction: column; }
         }
     </style>
 </head>
@@ -176,7 +155,7 @@
     </div>
     <div class="journal-header">
         <h1>Global Journal of Medical Research</h1>
-        <p>Published by Knowledge Framework Consulting | ISSN: Applied for</p>
+        <p>Open Access | ISSN: Applied for | Frequency: Monthly</p>
     </div>
     <div class="container">
         <div class="main" id="main-content">
@@ -186,8 +165,18 @@
             <h3>Journal Information</h3>
             <p><strong>Publisher:</strong> Knowledge Framework Consulting</p>
             <p><strong>Co-Chief Editors:</strong> Abhishek Bansal & Dr. Praveen Parshant</p>
-            <p><strong>Email:</strong> kfcwriters@gmail.com</p>
-            <p><strong>Phone:</strong> +91 9812018036</p>
+            <p><strong>Email:</strong> kfcwriters@gmail.com | <strong>Phone:</strong> +91 9812018036</p>
+            <hr>
+            <h3>Key Features</h3>
+            <ul>
+                <li>✓ Open Access (no subscription fees)</li>
+                <li>✓ No article processing charges (APC)</li>
+                <li>✓ Peer-reviewed (double-blind)</li>
+                <li>✓ DOI assigned to each article</li>
+                <li>✓ Compliant with COPE guidelines</li>
+                <li>✓ Indexing: Google Scholar, Crossref (in progress)</li>
+                <li>✓ Archiving: PKP PN, LOCKSS (planned)</li>
+            </ul>
             <hr>
             <h3>For Authors</h3>
             <ul>
@@ -198,7 +187,8 @@
         </div>
     </div>
     <div class="footer">
-        <p>© 2026 Knowledge Framework Consulting. All rights reserved. | <a href="https://kfcwriters.github.io">Main Site</a> | <a href="mailto:kfcwriters@gmail.com">Contact</a></p>
+        <p>© 2026 Global Journal of Medical Research, Knowledge Framework Consulting. All rights reserved.</p>
+        <p>This journal is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. | <a href="https://kfcwriters.github.io">Main Site</a> | <a href="mailto:kfcwriters@gmail.com">Contact</a></p>
     </div>
 
     <script>
