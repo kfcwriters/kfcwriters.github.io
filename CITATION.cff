@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+title: "Global Journal of Medical Research"
+message: "If you use this journal, please cite the specific article."
+authors:
+  - family-names: "Bansal"
+    given-names: "Abhishek"
+  - family-names: "Parshant"
+    given-names: "Praveen"
+    name-suffix: "Dr."
+repository: "https://github.com/kfcwriters/kfcwriters.github.io"
+type: "journal"
+license: "CC-BY-4.0"
