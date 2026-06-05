@@ -15,31 +15,30 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install dependencies
-        run: pip install requests weasyprint
-      - name: Generate article
+        run: pip install requests beautifulsoup4
+      - name: Generate article and get date
+        id: gen
         run: python scripts/generate_article.py
-      - name: Create GitHub Release for DOI
-        id: create_release
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: "Article ${{ env.DATE }}"
-          tag_name: "article-${{ env.DATE }}"
+          tag_name: "article-${{ steps.gen.outputs.DATE }}"
+          name: "Article ${{ steps.gen.outputs.DATE }}"
           generate_release_notes: false
           make_latest: false
-      - name: Fetch DOI from Zenodo
-        run: |
-          # Zenodo will automatically assign a DOI after release.
-          # We wait 30s and query Zenodo API.
-          sleep 30
-          python scripts/fetch_doi.py --tag "article-${{ env.DATE }}"
-      - name: Update article HTML with DOI
-        run: python scripts/inject_doi.py --file Journal/review-${{ env.DATE }}.html
-      - name: Commit DOI update
+      - name: Wait for Zenodo
+        run: sleep 30
+      - name: Fetch DOI
+        id: doi
+        run: python scripts/fetch_doi.py ${{ steps.gen.outputs.DATE }}
+      - name: Inject DOI into article
+        run: python scripts/inject_doi.py
+      - name: Update badges on homepage
+        run: python scripts/update_badges.py
+      - name: Commit changes
         run: |
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
-          git add Journal/
-          git diff --quiet && git diff --staged --quiet || git commit -m "Add DOI to article ${{ env.DATE }}"
+          git add Journal/ doi_cache.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "Add DOI to article ${{ steps.gen.outputs.DATE }}"
           git push
-      - name: Update index badges
-        run: python scripts/update_badges.py
