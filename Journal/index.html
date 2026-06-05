@@ -9,23 +9,28 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1e2a3a; line-height: 1.5; }
         .navbar { background: #0d47a1; padding: 15px 20px; text-align: center; position: sticky; top: 0; z-index: 100; }
         .navbar a { color: white; text-decoration: none; margin: 0 15px; font-weight: 500; }
+        .navbar a:hover { text-decoration: underline; }
         .journal-header { background: linear-gradient(135deg, #0a2b4e, #1e4a76); color: white; text-align: center; padding: 50px 20px; }
         .journal-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
         .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; display: flex; flex-wrap: wrap; gap: 30px; }
         .main { flex: 3; background: white; border-radius: 16px; padding: 35px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         .sidebar { flex: 1; background: white; border-radius: 16px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); align-self: start; }
         .sidebar h3 { background: #0d47a1; color: white; padding: 10px; margin: -25px -25px 20px -25px; border-radius: 16px 16px 0 0; }
-        .volume { margin-bottom: 30px; }
-        .volume h2 { color: #0d47a1; border-bottom: 2px solid #0d47a1; padding-bottom: 8px; margin-bottom: 15px; }
-        .issue { margin-left: 20px; margin-bottom: 20px; }
-        .issue h3 { color: #1e4a76; margin-bottom: 10px; }
+        .sidebar ul { padding-left: 20px; margin-top: 10px; }
+        .sidebar li { margin: 8px 0; }
+        .sidebar a { color: #0d47a1; text-decoration: none; }
+        .sidebar a:hover { text-decoration: underline; }
+        .volume { margin-bottom: 35px; }
+        .volume h2 { color: #0d47a1; border-bottom: 2px solid #0d47a1; padding-bottom: 8px; margin-bottom: 20px; font-size: 1.6rem; }
+        .issue { margin-left: 0; margin-bottom: 25px; }
+        .issue h3 { color: #1e4a76; margin-bottom: 12px; font-size: 1.3rem; border-left: 4px solid #0d47a1; padding-left: 12px; }
         .article-list { list-style: none; padding-left: 20px; }
-        .article-list li { margin: 10px 0; }
-        .article-list a { color: #0d47a1; text-decoration: none; font-weight: 500; }
-        .article-list a:hover { text-decoration: underline; }
-        .article-list .date { color: #6c7a89; font-size: 0.85rem; margin-left: 10px; }
+        .article-list li { margin: 12px 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; }
+        .article-list a { color: #0d47a1; text-decoration: none; font-weight: 500; font-size: 1.05rem; }
+        .article-list a:hover { text-decoration: underline; color: #e67e22; }
+        .article-list .date { color: #6c7a89; font-size: 0.85rem; }
         .footer { background: #0f2a38; color: #8aaec0; text-align: center; padding: 20px; margin-top: 30px; }
-        .footer a { color: #ffaa33; }
+        .footer a { color: #ffaa33; text-decoration: none; }
         @media (max-width: 800px) { .container { flex-direction: column; } }
     </style>
 </head>
@@ -36,6 +41,7 @@
         <a href="editorial-board.html">Editorial Board</a>
         <a href="author-guidelines.html">Author Guidelines</a>
         <a href="submit.html">Submit Article</a>
+        <a href="archive.html">Archives</a>
     </div>
     <div class="journal-header">
         <h1>Global Journal of Medical Research</h1>
@@ -86,8 +92,7 @@
                                 month: parseInt(dateMatch[2]),
                                 day: parseInt(dateMatch[3]),
                                 title: title,
-                                url: file.name,
-                                filename: file.name
+                                url: file.name
                             };
                         }
                         return null;
