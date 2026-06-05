@@ -1,0 +1,25 @@
+name: Daily Journal Article
+on:
+  schedule:
+    - cron: '0 10 * * *'
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate article
+        run: python generate_article.py
+      - name: Commit article
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git add Journal/
+          git diff --quiet && git diff --staged --quiet || git commit -m "Daily article $(date +'%Y-%m-%d')"
+          git push
