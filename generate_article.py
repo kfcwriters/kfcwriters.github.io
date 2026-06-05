@@ -101,6 +101,7 @@ def markdown_to_html(text):
 def generate_article():
     today = datetime.datetime.utcnow().date()
     date_str = today.strftime("%Y-%m-%d")
+    date_str_slash = date_str.replace('-', '/')  # for Scholar
     idx = today.timetuple().tm_yday % len(TOPICS)
     topic = TOPICS[idx]
     body_md = generate_review(today, topic)
@@ -127,6 +128,17 @@ def generate_article():
         .footer {{ background: #0f2a38; color: #8aaec0; text-align: center; padding: 20px; margin-top: 30px; }}
         .footer a {{ color: #ffaa33; text-decoration: none; }}
     </style>
+    <!-- Google Scholar meta tags -->
+    <meta name="citation_title" content="{topic}">
+    <meta name="citation_author" content="Abhishek Bansal">
+    <meta name="citation_author" content="Dr. Praveen Parshant">
+    <meta name="citation_publication_date" content="{date_str_slash}">
+    <meta name="citation_journal_title" content="Global Journal of Medical Research">
+    <meta name="citation_issn" content="Applied for">
+    <meta name="citation_volume" content="1">
+    <meta name="citation_issue" content="1">
+    <meta name="citation_abstract_html_url" content="https://kfcwriters.github.io/Journal/review-{date_str}.html">
+    <meta name="citation_doi" content="will be assigned after publication">
 </head>
 <body>
     <div class="navbar">
@@ -157,12 +169,12 @@ def generate_article():
 </body>
 </html>"""
 
-    html_content = html_template.format(topic=topic, date_str=date_str, body_html=body_html)
+    html_content = html_template.format(topic=topic, date_str=date_str, date_str_slash=date_str_slash, body_html=body_html)
     os.makedirs("Journal", exist_ok=True)
     filename = f"Journal/review-{date_str}.html"
     with open(filename, "w", encoding="utf-8") as f:
         f.write(html_content)
-    print(f"Generated {filename}")
+    print(f"Generated {filename} with Google Scholar meta tags.")
 
 if __name__ == "__main__":
     generate_article()
