@@ -15,30 +15,13 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install dependencies
-        run: pip install requests beautifulsoup4
-      - name: Generate article and get date
-        id: gen
-        run: python scripts/generate_article.py
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: "article-${{ steps.gen.outputs.DATE }}"
-          name: "Article ${{ steps.gen.outputs.DATE }}"
-          generate_release_notes: false
-          make_latest: false
-      - name: Wait for Zenodo
-        run: sleep 30
-      - name: Fetch DOI
-        id: doi
-        run: python scripts/fetch_doi.py ${{ steps.gen.outputs.DATE }}
-      - name: Inject DOI into article
-        run: python scripts/inject_doi.py
-      - name: Update badges on homepage
-        run: python scripts/update_badges.py
-      - name: Commit changes
+        run: pip install requests
+      - name: Generate article
+        run: python generate_article.py
+      - name: Commit article
         run: |
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
-          git add Journal/ doi_cache.json
-          git diff --quiet && git diff --staged --quiet || git commit -m "Add DOI to article ${{ steps.gen.outputs.DATE }}"
+          git add Journal/
+          git diff --quiet && git diff --staged --quiet || git commit -m "Daily article $(date +'%Y-%m-%d')"
           git push
