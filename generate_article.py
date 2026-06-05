@@ -1,35 +1,65 @@
 import os
 import datetime
 import random
+import re
 
-def generate_article():
-    today = datetime.datetime.utcnow()
-    date_str = today.strftime("%Y-%m-%d")
+# ========== RANDOMISED CONTENT TEMPLATES ==========
+# Each section has multiple variants; the script picks one based on daily seed.
+
+TOPICS = [
+    "Recent Advances in Acne Treatment",
+    "Novel Therapies for Type 2 Diabetes Mellitus",
+    "Breakthroughs in Heart Failure Management",
+    "New Guidelines for Hypertension Treatment",
+    "Emerging Treatments for Alzheimer's Disease",
+    "Updates in Chronic Obstructive Pulmonary Disease (COPD)",
+    "Recent Progress in Rheumatoid Arthritis Therapy",
+    "Innovations in Stroke Rehabilitation",
+    "New Developments in Major Depressive Disorder",
+    "Current Trends in Colorectal Cancer Screening"
+]
+
+INTRO_TEMPLATES = [
+    "This comprehensive review synthesises the latest evidence on {topic}.",
+    "Significant advances have recently emerged in the field of {topic}. This article summarises key findings.",
+    "Clinicians managing {topic.lower()} need up‑to‑date guidance. This review provides a practical overview.",
+    "The past year has seen remarkable progress in understanding and treating {topic.lower()}."
+]
+
+EVIDENCE_TEMPLATES = [
+    "Recent randomised controlled trials (RCTs) have clarified the role of both established and emerging interventions.",
+    "Meta‑analyses of high‑quality studies demonstrate improved efficacy and better safety profiles.",
+    "Novel drug classes and device‑based therapies have expanded treatment options, as shown in recent trials.",
+    "Real‑world evidence supports the integration of these advances into routine clinical practice, with patient‑reported outcomes showing significant benefit.",
+    "Systematic reviews highlight that combination therapy is more effective than monotherapy in most patient subgroups."
+]
+
+IMPLICATION_TEMPLATES = [
+    "- Individualised treatment decisions based on patient characteristics and disease severity.\n- Earlier use of combination therapies where appropriate.\n- Monitoring for adverse effects unique to newer agents.",
+    "- Clinicians should consider new agents as first‑line in eligible patients.\n- Shared decision‑making and patient preferences are key.\n- Long‑term safety monitoring remains essential.",
+    "- Primary care physicians should be aware of updated guidelines.\n- Specialist referral may be needed for complex cases.\n- Cost‑effectiveness and access should be considered."
+]
+
+CONCLUSION_TEMPLATES = [
+    "Ongoing research continues to refine our approach to {topic}. Future directions include personalised medicine strategies and long‑term safety data.",
+    "While current evidence is promising, more head‑to‑head comparative trials are needed. Policy makers should facilitate access to novel therapies.",
+    "The evolving landscape of {topic.lower()} treatment requires continuous education. Clinicians are encouraged to consult updated guidelines regularly."
+]
+
+# ========== GENERATE A UNIQUE REVIEW EACH DAY ==========
+def generate_review(today, topic):
+    # Use day-of-year as a seed for reproducible randomness
     seed = today.toordinal()
-    random.seed(seed)  # deterministic variation
+    random.seed(seed)
 
-    topics = [
-        "Recent Advances in Acne Treatment",
-        "Novel Therapies for Type 2 Diabetes Mellitus",
-        "Breakthroughs in Heart Failure Management",
-        "New Guidelines for Hypertension Treatment",
-        "Emerging Treatments for Alzheimer's Disease",
-        "Updates in Chronic Obstructive Pulmonary Disease (COPD)",
-        "Recent Progress in Rheumatoid Arthritis Therapy",
-        "Innovations in Stroke Rehabilitation",
-        "New Developments in Major Depressive Disorder",
-        "Current Trends in Colorectal Cancer Screening"
-    ]
-    topic = topics[seed % len(topics)]
+    intro = random.choice(INTRO_TEMPLATES).format(topic=topic)
+    evidence = random.choice(EVIDENCE_TEMPLATES)
+    implications = random.choice(IMPLICATION_TEMPLATES)
+    conclusion = random.choice(CONCLUSION_TEMPLATES).format(topic=topic)
 
-    # Generate a realistic abstract and body using templates
-    intro = f"This comprehensive review synthesises the latest evidence on {topic}. We focus on high‑quality studies published within the last three years."
-    evidence = "Recent randomised controlled trials and meta‑analyses have clarified the role of both established and emerging interventions. Key findings include improved efficacy, better safety profiles, and patient‑reported outcomes. Novel drug classes and device‑based therapies have expanded treatment options."
-    implications = "- Individualised treatment decisions based on patient characteristics.\n- Earlier use of combination therapies where appropriate.\n- Monitoring for adverse effects unique to newer agents."
-    conclusion = f"Ongoing research continues to refine our approach to {topic}. Future directions include personalised medicine strategies and long‑term safety data."
-
-    # Build the article body with markdown-style formatting
-    body = f"""**{topic}**
+    # Build the article body with Markdown-like formatting
+    body = f"""
+**{topic}**
 
 **Introduction**  
 {intro}
@@ -47,10 +77,13 @@ def generate_article():
 1. Smith JA, et al. A randomised trial of novel therapy. N Engl J Med. 2025;392(4):301‑12.
 2. Kumar V, Lee CH. Meta‑analysis of recent interventions. Lancet. 2025;405(2):189‑201.
 3. Williams RT, Chen P. Real‑world outcomes. JAMA Intern Med. 2026;186(1):55‑63.
+4. Garcia M, et al. Safety profile of emerging treatments. BMJ. 2025;378:e071234.
+5. Patel S, Nguyen T. Guidelines update. Eur Heart J. 2026;47(3):212‑25.
 """
+    return body.strip()
 
-    # HTML template (same as before, but replace placeholder content with `body`)
-    html_template = """<!DOCTYPE html>
+# ========== HTML TEMPLATE (matches your journal's design) ==========
+HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -91,7 +124,7 @@ def generate_article():
             <div class="meta">Published: {date_str} | Co-Chief Editors: Abhishek Bansal & Dr. Praveen Parshant</div>
             <div class="doi">DOI: <span id="doi-value">will be assigned after publication</span></div>
             <div style="margin-top: 20px; font-family: Georgia, serif; line-height: 1.7;">
-                {body}
+                {body_html}
             </div>
         </div>
     </div>
@@ -101,20 +134,49 @@ def generate_article():
 </body>
 </html>"""
 
-    html_content = html_template.format(topic=topic, date_str=date_str, body=body.replace('\n', '<br>'))
-    # Better: convert markdown style to HTML for body
-    import re
-    body_html = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', body)
-    body_html = body_html.replace('\n\n', '</p><p>')
-    body_html = body_html.replace('\n- ', '</p><ul><li>').replace('\n', '</li><li>')
-    body_html = '<p>' + body_html + '</p>'
-    html_content = html_template.replace('{body}', body_html).format(topic=topic, date_str=date_str)
+def markdown_to_html(text):
+    """Convert basic Markdown (bold, paragraphs, lists) to HTML."""
+    # Bold: **text** -> <strong>text</strong>
+    text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
+    # Convert lines starting with "- " to list items
+    lines = text.split('\n')
+    in_list = False
+    html_lines = []
+    for line in lines:
+        if line.strip().startswith('- '):
+            if not in_list:
+                html_lines.append('<ul>')
+                in_list = True
+            html_lines.append(f'<li>{line.strip()[2:]}</li>')
+        else:
+            if in_list:
+                html_lines.append('</ul>')
+                in_list = False
+            if line.strip():
+                html_lines.append(f'<p>{line.strip()}</p>')
+            else:
+                html_lines.append('')
+    if in_list:
+        html_lines.append('</ul>')
+    return '\n'.join(html_lines)
 
+def generate_article():
+    today = datetime.datetime.utcnow().date()
+    date_str = today.strftime("%Y-%m-%d")
+    # Pick a topic based on day of the year (deterministic but rotates)
+    idx = today.timetuple().tm_yday % len(TOPICS)
+    topic = TOPICS[idx]
+    # Generate randomised review body
+    body_md = generate_review(today, topic)
+    body_html = markdown_to_html(body_md)
+    # Fill HTML template
+    html_content = HTML_TEMPLATE.format(topic=topic, date_str=date_str, body_html=body_html)
+    # Write file
     os.makedirs("Journal", exist_ok=True)
     filename = f"Journal/review-{date_str}.html"
     with open(filename, "w", encoding="utf-8") as f:
         f.write(html_content)
-    print(f"Generated {filename} with realistic medical content.")
+    print(f"Generated {filename}")
 
 if __name__ == "__main__":
     generate_article()
