@@ -30,7 +30,7 @@ jobs:
           generate_release_notes: false
           make_latest: false
       - name: Wait for Zenodo to process
-        run: sleep 45
+        run: sleep 90
       - name: Fetch DOI
         id: doi
         env:
