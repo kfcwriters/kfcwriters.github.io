@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KFC – Knowledge Framework Consulting | Professional Medical Writing Services</title>
-    <meta name="description" content="KFC (Knowledge Framework Consulting) – Protocol / Synopsis, Thesis Writing, Indexed Journal Papers. Expert human medical writing for researchers, clinicians, and PhD students.">
+    <title>KFC – Knowledge Framework Consulting</title>
     <style>
         * {
             margin: 0;
@@ -13,522 +12,497 @@
         }
 
         body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f4f8;
-            color: #1e2a3a;
+            font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(145deg, #fef9f0 0%, #f0f4fa 100%);
+            color: #1a2c3e;
             line-height: 1.5;
         }
 
-        /* Header / Navbar */
-        .navbar {
-            background: #0d47a1;
-            padding: 15px 20px;
-            text-align: center;
+        /* Navigation */
+        .nav {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
         }
-        .navbar a {
-            color: white;
+        .nav a {
             text-decoration: none;
-            margin: 0 15px;
-            font-weight: 500;
+            font-weight: 600;
+            color: #0a2b44;
+            transition: 0.2s;
         }
-        .navbar a:hover {
-            text-decoration: underline;
+        .nav a:hover {
+            color: #e67e22;
         }
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, #0d47a1, #1e4a76);
-            color: white;
             text-align: center;
-            padding: 60px 20px;
+            padding: 4rem 1.5rem 5rem;
+            background: linear-gradient(135deg, #0a2b44, #1e4a76);
+            color: white;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
         }
         .hero img {
-            max-height: 80px;
-            margin-bottom: 20px;
+            max-width: 120px;
+            margin-bottom: 1rem;
         }
         .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
+            font-size: 3.5rem;
+            letter-spacing: -1px;
         }
-        .hero .full-name {
+        .hero .tagline {
             font-size: 1.3rem;
             opacity: 0.9;
-            margin-bottom: 15px;
+            margin: 1rem 0 2rem;
         }
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto 25px;
-            opacity: 0.95;
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
         }
         .btn {
-            background: white;
-            color: #0d47a1;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
             text-decoration: none;
-            padding: 12px 30px;
-            border-radius: 40px;
-            font-weight: bold;
+            font-weight: 600;
+            transition: all 0.2s;
             display: inline-block;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin: 0 10px;
         }
-        .btn:hover {
+        .btn-primary {
+            background: #e67e22;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-primary:hover {
+            background: #d35400;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-        .btn-whatsapp {
-            background: #25D366;
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
             color: white;
         }
-        .btn-whatsapp:hover {
-            background: #1da851;
-        }
-        .hero-badges {
-            margin-top: 20px;
-            font-size: 0.9rem;
+        .btn-outline:hover {
+            background: white;
+            color: #0a2b44;
         }
 
         /* Container */
         .container {
             max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
         }
 
-        /* Section Titles */
-        .section-title {
-            font-size: 2rem;
+        /* Section heading */
+        .section-head {
             text-align: center;
-            margin-bottom: 40px;
-            color: #0d47a1;
-            position: relative;
+            margin-bottom: 3rem;
         }
-        .section-title:after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background: #0d47a1;
-            margin: 10px auto 0;
-            border-radius: 2px;
+        .section-head h2 {
+            font-size: 2.2rem;
+            color: #0a2b44;
+            display: inline-block;
+            border-bottom: 4px solid #e67e22;
+            padding-bottom: 0.5rem;
         }
 
-        /* Cards Grid */
-        .cards-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            justify-content: center;
-            margin-bottom: 50px;
+        /* Service cards (grid) */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
         }
-        .card {
+        .service-card {
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-            padding: 30px;
-            flex: 1 1 300px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            text-align: center;
+            border: 1px solid rgba(0,0,0,0.03);
         }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.1);
         }
-        .card h3 {
-            color: #0d47a1;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            border-left: 4px solid #0d47a1;
-            padding-left: 15px;
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
         }
-        .card .price {
+        .service-card h3 {
+            font-size: 1.6rem;
+            color: #0a2b44;
+            margin-bottom: 1rem;
+        }
+        .price {
             font-size: 1.8rem;
-            font-weight: bold;
-            color: #0d47a1;
-            margin: 15px 0;
+            font-weight: 700;
+            color: #e67e22;
+            margin: 1rem 0;
         }
-        .card ul {
+        .service-card ul {
             list-style: none;
-            margin: 20px 0;
+            margin: 1.5rem 0;
+            text-align: left;
+            padding-left: 0;
         }
-        .card ul li {
-            margin-bottom: 10px;
-            padding-left: 24px;
-            position: relative;
+        .service-card li {
+            margin: 0.6rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        .card ul li:before {
+        .service-card li::before {
             content: "✓";
-            color: #0d47a1;
+            color: #e67e22;
             font-weight: bold;
-            position: absolute;
-            left: 0;
-        }
-        .card .btn {
-            background: #0d47a1;
-            color: white;
-            margin-top: 10px;
-            display: inline-block;
         }
 
         /* Testimonials */
-        .testimonials-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            justify-content: center;
-            margin-bottom: 50px;
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
         }
-        .testimonial-card {
+        .testimonial {
             background: white;
-            border-radius: 16px;
-            padding: 25px;
-            max-width: 350px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            border-left: 5px solid #0d47a1;
+            border-radius: 20px;
+            padding: 1.8rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            border-left: 5px solid #e67e22;
         }
-        .testimonial-card p {
+        .testimonial p {
             font-style: italic;
-            margin-bottom: 15px;
+            margin-bottom: 1rem;
         }
-        .testimonial-card .author {
-            font-weight: bold;
+        .testimonial .author {
+            font-weight: 600;
             text-align: right;
         }
 
-        /* Warning / Info Box */
-        .warning-box {
-            background: #fff8e7;
-            border-left: 5px solid #ffc107;
-            border-radius: 12px;
-            padding: 20px;
-            margin: 30px 0;
-            font-size: 0.95rem;
+        /* Warning box */
+        .warning {
+            background: #fff3e0;
+            border-radius: 20px;
+            padding: 1.8rem;
+            margin: 2rem 0;
+            border-left: 6px solid #e67e22;
         }
 
-        /* Free Edit Box */
+        /* Free edit banner */
         .free-edit {
-            background: #e3f2fd;
-            border-radius: 20px;
-            padding: 35px;
+            background: linear-gradient(110deg, #e67e22, #f39c12);
+            border-radius: 30px;
+            padding: 2.5rem;
             text-align: center;
-            margin: 40px 0;
+            color: white;
+            margin: 2rem 0;
         }
-        .free-edit h3 {
-            color: #0d47a1;
-            margin-bottom: 15px;
+        .free-edit .btn {
+            background: white;
+            color: #e67e22;
+            margin-top: 1rem;
+        }
+
+        /* Journal promo */
+        .journal-promo {
+            background: white;
+            border-radius: 30px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
         }
 
         /* Podcast & Blog */
-        .podcast-player {
+        .podcast-card {
             background: white;
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 30px;
+            padding: 2rem;
+            margin: 2rem 0;
             text-align: center;
-            margin-bottom: 40px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
         .blog-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin: 2rem 0;
         }
-        .blog-card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
-        }
-        .blog-card:hover {
-            transform: translateY(-3px);
-        }
-        .blog-card h4 a {
-            color: #0d47a1;
-            text-decoration: none;
-        }
-        .blog-card h4 a:hover {
-            text-decoration: underline;
-        }
-
-        /* Contact Sections */
-        .contact-card {
+        .blog-item {
             background: white;
             border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            margin-top: 30px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            transition: 0.2s;
         }
-        .contact-card h3 {
-            color: #0d47a1;
-            margin-bottom: 20px;
+        .blog-item h4 a {
+            text-decoration: none;
+            color: #0a2b44;
+        }
+        .blog-item h4 a:hover {
+            color: #e67e22;
+        }
+
+        /* Contact */
+        .contact-box {
+            background: white;
+            border-radius: 30px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
         }
         .contact-links {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 2rem;
             flex-wrap: wrap;
-            margin: 20px 0;
+            margin: 1.5rem 0;
         }
         .contact-links a {
-            color: #0d47a1;
-            font-weight: bold;
             text-decoration: none;
+            font-weight: 600;
+            color: #0a2b44;
         }
         .contact-links a:hover {
-            text-decoration: underline;
+            color: #e67e22;
         }
 
-        /* Footer */
         footer {
-            background: #0d47a1;
-            color: white;
             text-align: center;
-            padding: 30px 20px;
-            margin-top: 50px;
+            padding: 2rem;
+            background: #0a2b44;
+            color: white;
+            margin-top: 3rem;
         }
         footer a {
-            color: #bbdefb;
+            color: #f39c12;
             text-decoration: none;
-            margin: 0 10px;
-        }
-        footer a:hover {
-            text-decoration: underline;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
+        @media (max-width: 700px) {
             .hero h1 { font-size: 2rem; }
-            .section-title { font-size: 1.6rem; }
-            .navbar a { margin: 0 8px; font-size: 0.9rem; }
+            .section-head h2 { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navigation Bar (matches journal style) -->
-    <div class="navbar">
-        <a href="index.html">Home</a>
-        <a href="https://kfcwriters.github.io/Journal/">Our Journal</a>
-        <a href="#services">Services</a>
-        <a href="#contact">Contact</a>
+<div class="nav">
+    <a href="index.html">Home</a>
+    <a href="https://kfcwriters.github.io/Journal/">Our Journal</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
+</div>
+
+<div class="hero">
+    <img src="logo.png" alt="KFC Logo">
+    <h1>Knowledge Framework Consulting</h1>
+    <div class="tagline">Medical Writing That Gets Published</div>
+    <div class="btn-group">
+        <a href="https://kfcwriters.carrd.co/" class="btn btn-primary">Request a Quote</a>
+        <a href="https://wa.me/919812018036" class="btn btn-outline">Chat on WhatsApp</a>
     </div>
+    <div style="margin-top: 2rem; font-size: 0.9rem;">✔ Human‑written &nbsp;|&nbsp; ✔ Plagiarism‑free &nbsp;|&nbsp; ✔ Journal‑ready</div>
+</div>
 
-    <!-- Hero Section -->
-    <div class="hero">
-        <img src="logo.png" alt="KFC Logo">
-        <h1>KFC</h1>
-        <div class="full-name">Knowledge Framework Consulting</div>
-        <p>Professional Medical Writing Services – Human‑written, plagiarism‑free, publication‑ready.</p>
-        <div>
-            <a href="https://kfcwriters.carrd.co/" class="btn">Get Free Quote</a>
-            <a href="https://wa.me/919812018036" class="btn btn-whatsapp">Chat on WhatsApp</a>
-        </div>
-        <div class="hero-badges">
-            ✔ 100% original &nbsp;|&nbsp; ✔ Guaranteed plagiarism‑free &nbsp;|&nbsp; ✔ Trusted by researchers
-        </div>
+<div class="container">
+
+    <!-- Services Section -->
+    <div id="services" class="section-head">
+        <h2>What We Offer</h2>
     </div>
-
-    <div class="container">
-
-        <!-- Services & Pricing -->
-        <h2 id="services" class="section-title">Services & Pricing</h2>
-        <div class="cards-grid">
-            <div class="card">
-                <h3>Protocol / Synopsis</h3>
-                <div class="price">₹3,000 – ₹5,000</div>
-                <p>From topic to final draft, structured and ready for approval.</p>
-                <a href="https://wa.me/919812018036" class="btn">Inquire on WhatsApp</a>
-            </div>
-            <div class="card">
-                <h3>Thesis Writing</h3>
-                <div class="price">₹40,000 – ₹50,000</div>
-                <ul>
-                    <li>Complete original thesis</li>
-                    <li>Plagiarism‑free</li>
-                    <li>With masterchart</li>
-                    <li>Two major corrections included</li>
-                </ul>
-                <a href="https://wa.me/919812018036" class="btn">Inquire on WhatsApp</a>
-            </div>
-            <div class="card">
-                <h3>Journal Paper / Manuscript</h3>
-                <div class="price">₹5,000 – ₹15,000</div>
-                <ul>
-                    <li>As per journal requirements</li>
-                    <li>Indexed journal ready</li>
-                    <li>Full formatting and references</li>
-                </ul>
-                <a href="https://wa.me/919812018036" class="btn">Inquire on WhatsApp</a>
-            </div>
+    <div class="service-grid">
+        <div class="service-card">
+            <div class="service-icon">📋</div>
+            <h3>Protocol / Synopsis</h3>
+            <div class="price">₹3,000 – ₹5,000</div>
+            <ul>
+                <li>Topic to final draft</li>
+                <li>Structured and approved format</li>
+            </ul>
+            <a href="https://wa.me/919812018036" class="btn btn-primary" style="background:#0a2b44;">Inquire</a>
         </div>
-
-        <!-- Testimonials -->
-        <h2 class="section-title">What Our Clients Say</h2>
-        <div class="testimonials-grid">
-            <div class="testimonial-card">
-                <p>“My thesis was accepted with minor revisions after their editing. Professional and fast.”</p>
-                <div class="author">— Dr. Priya M., AIIMS Delhi</div>
-            </div>
-            <div class="testimonial-card">
-                <p>“The manuscript they wrote for us was accepted in a Scopus‑indexed journal. Highly recommended.”</p>
-                <div class="author">— Dr. Rajesh K., PGIMER</div>
-            </div>
-            <div class="testimonial-card">
-                <p>“Finally found a service that delivers original content without AI shortcuts. Will use again.”</p>
-                <div class="author">— Dr. Sneha R., Manipal</div>
-            </div>
+        <div class="service-card">
+            <div class="service-icon">📚</div>
+            <h3>Thesis Writing</h3>
+            <div class="price">₹40,000 – ₹50,000</div>
+            <ul>
+                <li>Complete original thesis</li>
+                <li>With masterchart</li>
+                <li>Two major corrections</li>
+            </ul>
+            <a href="https://wa.me/919812018036" class="btn btn-primary" style="background:#0a2b44;">Inquire</a>
         </div>
-
-        <!-- Warning against AI-generated content -->
-        <div class="warning-box">
-            ⚠️ <strong>Attention Researchers & Clinicians:</strong> Many so‑called “writers” now use AI tools to generate low‑quality, plagiarised content. 
-            At KFC – Knowledge Framework Consulting, every word is written by experienced human medical professionals. 
-            Don’t risk your publication – choose genuine expertise.
-        </div>
-
-        <!-- Free Sample Edit -->
-        <div class="free-edit">
-            <h3>🔍 Not Sure About Quality? Get a Free Sample Edit</h3>
-            <p>Send us 200 words from your manuscript, and we’ll edit it for free — no strings attached.</p>
-            <a href="https://wa.me/919812018036" class="btn btn-whatsapp" style="margin-top: 15px;">Claim Your Free Edit on WhatsApp</a>
-        </div>
-
-        <!-- Link to Journal -->
-        <div style="background: #f0f4f8; border-radius: 20px; padding: 30px; text-align: center; margin: 40px 0; border: 1px solid #cbd5e1;">
-            <h3 style="color: #0d47a1;">📖 Explore Our Peer‑Reviewed Journal</h3>
-            <p style="margin: 15px 0;">The <strong>Global Journal of Medical Research</strong> publishes original reviews, case reports, and research articles.</p>
-            <a href="https://kfcwriters.github.io/Journal/" class="btn">Visit the Journal</a>
-        </div>
-
-        <!-- Podcast Section -->
-        <h2 class="section-title">Listen to How We Help Researchers Get Published</h2>
-        <div class="podcast-player" id="podcast-episode">
-            Loading latest episode…
-        </div>
-        <div style="text-align: center; margin-bottom: 40px;">
-            <a href="https://open.spotify.com/show/033fW7vXbKhdSPwnjcTyZ7" target="_blank" class="btn" style="background: #1DB954; color: white;">▶ Listen on Spotify</a>
-            <a href="https://kfcwriters.github.io/podcast.xml" class="btn">Copy RSS Feed</a>
-        </div>
-
-        <!-- Latest Articles from Dev.to -->
-        <h2 class="section-title">Latest Medical Writing Articles</h2>
-        <div class="blog-grid" id="blog-posts">
-            Loading articles…
-        </div>
-
-        <!-- Contact Section -->
-        <div id="contact" class="contact-card">
-            <h3>Get in Touch</h3>
-            <p>Ready to discuss your medical writing project? We'll respond within 24 hours.</p>
-            <div class="contact-links">
-                <a href="https://kfcwriters.carrd.co/">📋 Inquiry Form</a>
-                <a href="https://wa.me/919812018036">💬 WhatsApp: +91 9812018036</a>
-                <a href="mailto:kfcwriters@gmail.com">✉️ kfcwriters@gmail.com</a>
-            </div>
-            <p style="margin-top: 20px;">Also available on <a href="https://t.me/MedicalWriting_Services" target="_blank">Telegram</a></p>
+        <div class="service-card">
+            <div class="service-icon">📄</div>
+            <h3>Journal Paper</h3>
+            <div class="price">₹5,000 – ₹15,000</div>
+            <ul>
+                <li>As per journal guidelines</li>
+                <li>Indexed journal ready</li>
+                <li>Full formatting & references</li>
+            </ul>
+            <a href="https://wa.me/919812018036" class="btn btn-primary" style="background:#0a2b44;">Inquire</a>
         </div>
     </div>
 
-    <footer>
-        <p>© 2026 KFC – Knowledge Framework Consulting. All rights reserved.</p>
-        <p><a href="https://kfcwriters.github.io">Home</a> | <a href="https://kfcwriters.github.io/Journal/">Journal</a> | <a href="https://t.me/MedicalWriting_Services">Telegram</a></p>
-    </footer>
+    <!-- Testimonials -->
+    <div class="section-head">
+        <h2>Trusted by Researchers</h2>
+    </div>
+    <div class="testimonial-grid">
+        <div class="testimonial">
+            <p>“My thesis was accepted with minor revisions. Fast, professional, and human.”</p>
+            <div class="author">— Dr. Priya M., AIIMS</div>
+        </div>
+        <div class="testimonial">
+            <p>“Scopus‑indexed paper accepted within 3 weeks. Highly recommend KFC.”</p>
+            <div class="author">— Dr. Rajesh K., PGIMER</div>
+        </div>
+        <div class="testimonial">
+            <p>“Finally a service that doesn't use AI shortcuts. Genuine medical writers.”</p>
+            <div class="author">— Dr. Sneha R., Manipal</div>
+        </div>
+    </div>
 
-    <!-- Fetch articles from Dev.to -->
-    <script>
-        const blogContainer = document.getElementById('blog-posts');
-        const devtoUsername = 'kfc_writers_12f474fa70382';
+    <!-- Warning about AI -->
+    <div class="warning">
+        ⚠️ <strong>No AI‑generated content.</strong> Many “writers” now use ChatGPT to produce low‑quality, often plagiarised work. KFC guarantees every document is written by experienced human medical professionals. Your publication is too important to risk.
+    </div>
 
-        function isUnwantedTitle(title) {
-            const unwanted = ['time mastery', 'freelancer'];
-            const lowerTitle = title.toLowerCase();
-            return unwanted.some(word => lowerTitle.includes(word));
+    <!-- Free Sample Edit -->
+    <div class="free-edit">
+        <h3>🔍 Get a Free Sample Edit</h3>
+        <p>Send us 200 words of your manuscript – we'll edit it for free, no obligation.</p>
+        <a href="https://wa.me/919812018036" class="btn">Claim Your Free Edit →</a>
+    </div>
+
+    <!-- Journal Promotion -->
+    <div class="journal-promo">
+        <h3 style="color:#0a2b44;">📖 Global Journal of Medical Research</h3>
+        <p>Our peer‑reviewed journal publishes original medical reviews and case reports. <strong>Open access, no publication fees.</strong></p>
+        <a href="https://kfcwriters.github.io/Journal/" class="btn btn-primary" style="background:#e67e22; margin-top: 1rem;">Browse the Journal →</a>
+    </div>
+
+    <!-- Podcast -->
+    <div class="section-head">
+        <h2>Listen & Learn</h2>
+    </div>
+    <div class="podcast-card" id="podcast-episode">
+        Loading latest episode…
+    </div>
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <a href="https://open.spotify.com/show/033fW7vXbKhdSPwnjcTyZ7" target="_blank" class="btn btn-primary" style="background:#1DB954;">▶ Spotify</a>
+        <a href="https://kfcwriters.github.io/podcast.xml" class="btn btn-outline" style="border-color:#0a2b44; color:#0a2b44;">RSS Feed</a>
+    </div>
+
+    <!-- Latest Articles -->
+    <div class="section-head">
+        <h2>From Our Blog</h2>
+    </div>
+    <div class="blog-grid" id="blog-posts">Loading articles…</div>
+
+    <!-- Contact -->
+    <div id="contact" class="contact-box">
+        <h3 style="color:#0a2b44;">Let’s Talk About Your Project</h3>
+        <div class="contact-links">
+            <a href="https://kfcwriters.carrd.co/">📋 Inquiry Form</a>
+            <a href="https://wa.me/919812018036">💬 WhatsApp +91 9812018036</a>
+            <a href="mailto:kfcwriters@gmail.com">✉️ kfcwriters@gmail.com</a>
+        </div>
+        <p>Also available on <a href="https://t.me/MedicalWriting_Services" target="_blank">Telegram</a></p>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 KFC – Knowledge Framework Consulting. All rights reserved.</p>
+    <p><a href="index.html">Home</a> | <a href="https://kfcwriters.github.io/Journal/">Journal</a> | <a href="https://t.me/MedicalWriting_Services">Telegram</a></p>
+</footer>
+
+<!-- Blog fetch script -->
+<script>
+    const blogContainer = document.getElementById('blog-posts');
+    const devtoUsername = 'kfc_writers_12f474fa70382';
+    function isUnwantedTitle(title) {
+        const unwanted = ['time mastery', 'freelancer'];
+        const lowerTitle = title.toLowerCase();
+        return unwanted.some(word => lowerTitle.includes(word));
+    }
+    async function loadArticles() {
+        try {
+            const response = await fetch(`https://dev.to/api/articles?username=${devtoUsername}&per_page=20`);
+            const articles = await response.json();
+            const medicalArticles = articles.filter(article => {
+                if (!article.tag_list) return false;
+                const tags = article.tag_list;
+                const tagOk = tags.includes('medical') && !tags.includes('biochemistry') && !tags.includes('nutrition') && !tags.includes('tutoring') && !tags.includes('productivity');
+                const titleOk = !isUnwantedTitle(article.title);
+                return tagOk && titleOk;
+            });
+            if (medicalArticles.length === 0) {
+                blogContainer.innerHTML = '<p>No articles yet. Check back soon!</p>';
+                return;
+            }
+            blogContainer.innerHTML = medicalArticles.slice(0, 6).map(article => `
+                <div class="blog-item">
+                    <h4><a href="${article.url}" target="_blank">${article.title}</a></h4>
+                    <div style="color:#6c7a89; font-size:0.85rem;">${article.published_at ? new Date(article.published_at).toLocaleDateString('en-US') : ''}</div>
+                    <p style="margin-top:10px;">${article.description ? article.description.slice(0, 120) + '…' : 'Read more on Dev.to.'}</p>
+                </div>
+            `).join('');
+        } catch (error) {
+            blogContainer.innerHTML = '<p>Unable to load articles. Visit our <a href="https://dev.to/kfc_writers_12f474fa70382" target="_blank">Dev.to</a>.</p>';
         }
+    }
+    loadArticles();
+</script>
 
-        async function loadArticles() {
-            try {
-                const response = await fetch(`https://dev.to/api/articles?username=${devtoUsername}&per_page=20`);
-                const articles = await response.json();
-
-                const medicalArticles = articles.filter(article => {
-                    if (!article.tag_list) return false;
-                    const tags = article.tag_list;
-                    const tagOk = tags.includes('medical') &&
-                                  !tags.includes('biochemistry') &&
-                                  !tags.includes('nutrition') &&
-                                  !tags.includes('tutoring') &&
-                                  !tags.includes('productivity');
-                    const titleOk = !isUnwantedTitle(article.title);
-                    return tagOk && titleOk;
-                });
-
-                if (medicalArticles.length === 0) {
-                    blogContainer.innerHTML = '<p>No medical writing articles yet. Check back soon!</p>';
+<!-- Podcast script -->
+<script>
+    (function() {
+        const container = document.getElementById('podcast-episode');
+        const rssUrl = 'https://kfcwriters.github.io/podcast.xml';
+        fetch(rssUrl)
+            .then(response => response.text())
+            .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+            .then(xml => {
+                const allItems = xml.querySelectorAll('item');
+                const firstItem = allItems[allItems.length - 1];
+                if (!firstItem) {
+                    container.innerHTML = '<p>No episodes yet.</p>';
                     return;
                 }
-
-                blogContainer.innerHTML = medicalArticles.slice(0, 6).map(article => `
-                    <div class="blog-card">
-                        <h4><a href="${article.url}" target="_blank">${article.title}</a></h4>
-                        <div style="color: #6c7a89; font-size: 0.85rem;">${article.published_at ? new Date(article.published_at).toLocaleDateString('en-US') : ''}</div>
-                        <p style="margin-top: 10px;">${article.description ? article.description.slice(0, 120) + '…' : 'Read more on Dev.to.'}</p>
-                    </div>
-                `).join('');
-
-            } catch (error) {
-                blogContainer.innerHTML = '<p>Unable to load articles. Please visit our <a href="https://dev.to/kfc_writers_12f474fa70382" target="_blank">Dev.to profile</a>.</p>';
-            }
-        }
-
-        loadArticles();
-    </script>
-
-    <!-- Fetch podcast episode -->
-    <script>
-        (function() {
-            const container = document.getElementById('podcast-episode');
-            const rssUrl = 'https://kfcwriters.github.io/podcast.xml';
-
-            fetch(rssUrl)
-                .then(response => response.text())
-                .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
-                .then(xml => {
-                    const allItems = xml.querySelectorAll('item');
-                    const firstItem = allItems[allItems.length - 1];
-                    if (!firstItem) {
-                        container.innerHTML = '<p>No episodes yet.</p>';
-                        return;
-                    }
-                    const title = firstItem.querySelector('title')?.textContent || 'Untitled';
-                    const enclosure = firstItem.querySelector('enclosure');
-                    const audioUrl = enclosure?.getAttribute('url');
-                    const pubDate = firstItem.querySelector('pubDate')?.textContent || '';
-                    const dateStr = pubDate ? new Date(pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
-
-                    if (!audioUrl) {
-                        container.innerHTML = '<p>Audio not found.</p>';
-                        return;
-                    }
-
-                    container.innerHTML = `
-                        <h4 style="margin-bottom: 10px;">${title}</h4>
-                        ${dateStr ? `<p style="color: #666; font-size: 0.9em;">${dateStr}</p>` : ''}
-                        <audio controls style="width: 100%; margin-top: 10px;">
-                            <source src="${audioUrl}" type="audio/mpeg">
-                            Your browser does not support the audio element.
-                        </audio>
-                    `;
-                })
-                .catch(() => {
-                    container.innerHTML = '<p>Unable to load podcast. Please check back later.</p>';
-                });
-        })();
-    </script>
+                const title = firstItem.querySelector('title')?.textContent || 'Untitled';
+                const enclosure = firstItem.querySelector('enclosure');
+                const audioUrl = enclosure?.getAttribute('url');
+                const pubDate = firstItem.querySelector('pubDate')?.textContent || '';
+                const dateStr = pubDate ? new Date(pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
+                if (!audioUrl) {
+                    container.innerHTML = '<p>Audio not found.</p>';
+                    return;
+                }
+                container.innerHTML = `
+                    <h4 style="margin-bottom:10px;">${title}</h4>
+                    ${dateStr ? `<p style="color:#666;">${dateStr}</p>` : ''}
+                    <audio controls style="width:100%; margin-top:10px;">
+                        <source src="${audioUrl}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                `;
+            })
+            .catch(() => { container.innerHTML = '<p>Unable to load podcast.</p>'; });
+    })();
+</script>
 </body>
 </html>
