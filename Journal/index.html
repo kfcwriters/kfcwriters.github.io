@@ -1,18 +1,22 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Global Journal of Medical Research</title>
-<style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Journal of Medical Research</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f0f4f8;
             color: #1e2a3a;
             line-height: 1.5;
         }
+        /* Navigation */
         .navbar {
             background: #0d47a1;
             padding: 15px 20px;
@@ -27,14 +31,21 @@
             margin: 0 15px;
             font-weight: 500;
         }
-        .navbar a:hover { text-decoration: underline; }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        /* Header */
         .journal-header {
             background: linear-gradient(135deg, #0a2b4e, #1e4a76);
             color: white;
             text-align: center;
             padding: 50px 20px;
         }
-        .journal-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .journal-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        /* Main container */
         .container {
             max-width: 1200px;
             margin: 40px auto;
@@ -43,6 +54,7 @@
             flex-wrap: wrap;
             gap: 40px;
         }
+        /* Main content */
         .main {
             flex: 3;
             background: white;
@@ -50,6 +62,7 @@
             padding: 30px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
+        /* Sidebar */
         .sidebar {
             flex: 1;
             background: white;
@@ -70,20 +83,34 @@
             margin: 12px 0;
             line-height: 1.5;
         }
+        .sidebar ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .sidebar li {
+            padding-left: 24px;
+            position: relative;
+        }
+        .sidebar li::before {
+            content: "✓";
+            color: #0d47a1;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
         .sidebar hr {
             margin: 20px 0;
             border: none;
             border-top: 1px solid #e2e8f0;
         }
-        .sidebar ul {
-            list-style: none;
-            padding-left: 0;
-        }
         .sidebar a {
             color: #0d47a1;
             text-decoration: none;
         }
-        .sidebar a:hover { text-decoration: underline; }
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+        /* Volume/Issue styling */
         .volume {
             margin-bottom: 30px;
         }
@@ -128,80 +155,73 @@
             color: #6c7a89;
             font-size: 0.85rem;
         }
+        /* Footer */
         .footer {
             background: #0f2a38;
             color: #8aaec0;
             text-align: center;
             padding: 25px;
             margin-top: 40px;
-            font-size: 0.9rem;
         }
         .footer a {
             color: #ffaa33;
             text-decoration: none;
         }
+        /* Responsive */
         @media (max-width: 800px) {
-            .container { flex-direction: column; }
+            .container {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-<div class="navbar">
-<a href="index.html">Home</a>
-<a href="aims-scope.html">Aims &amp; Scope</a>
-<a href="editorial-board.html">Editorial Board</a>
-<a href="author-guidelines.html">Author Guidelines</a>
-<a href="submit.html">Submit Article</a>
-<a href="archive.html">Archives</a>
-</div>
-<div class="journal-header">
-<h1>Global Journal of Medical Research</h1>
-<p>Open Access | ISSN: Applied for | Frequency: Monthly</p>
-</div>
-<div class="container">
-<div class="main" id="main-content">
-<p style="text-align: center;">Loading articles...</p>
-</div>
-<div class="sidebar">
-<h3>Journal Information</h3>
-<div class="journal-badges" style="margin: 20px 0;">
-<h3>Journal Credentials</h3>
-<ul>
-<li>✓ DOI assigned to each article (via Zenodo)</li>
-<li>✓ Compliant with COPE guidelines</li>
-<li>✓ Indexing: Google Scholar (applied), Crossref (in progress)</li>
-<li>✓ Archiving: PKP PN / LOCKSS (planned) + Zenodo monthly</li>
-</ul>
-</div>
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="aims-scope.html">Aims & Scope</a>
+        <a href="editorial-board.html">Editorial Board</a>
+        <a href="author-guidelines.html">Author Guidelines</a>
+        <a href="submit.html">Submit Article</a>
+        <a href="archive.html">Archives</a>
+    </div>
+    <div class="journal-header">
+        <h1>Global Journal of Medical Research</h1>
+        <p>Open Access | ISSN: Applied for | Frequency: Monthly</p>
+    </div>
+    <div class="container">
+        <div class="main" id="main-content">
+            <!-- Articles will be loaded dynamically by JavaScript -->
+            <p style="text-align: center;">Loading articles...</p>
+        </div>
+        <div class="sidebar">
+            <h3>Journal Information</h3>
+            <div class="journal-badges">
+                <h4>Journal Credentials</h4>
+                <ul>
+                    <li>DOI assigned to each article (via Zenodo)</li>
+                    <li>Compliant with COPE guidelines</li>
+                    <li>Indexing: Google Scholar (applied), Crossref (in progress)</li>
+                    <li>Archiving: PKP PN / LOCKSS (planned) + Zenodo monthly</li>
+                </ul>
+            </div>
+            <p><strong>Publisher:</strong> Knowledge Framework Consulting</p>
+            <p><strong>Co-Chief Editors:</strong> Abhishek Bansal & Dr. Praveen Parshant</p>
+            <p><strong>Email:</strong> kfcwriters@gmail.com</p>
+            <p><strong>Phone:</strong> +91 9812018036</p>
+            <hr>
+            <h3>For Authors</h3>
+            <ul>
+                <li><a href="aims-scope.html">Aims & Scope</a></li>
+                <li><a href="author-guidelines.html">Author Guidelines</a></li>
+                <li><a href="submit.html">Submit an Article</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer">
+        <p>© 2026 Global Journal of Medical Research, Knowledge Framework Consulting. | <a href="https://kfcwriters.github.io">Main Site</a> | <a href="mailto:kfcwriters@gmail.com">Contact</a></p>
+    </div>
 
-<p><strong>Publisher:</strong> Knowledge Framework Consulting</p>
-<p><strong>Co-Chief Editors:</strong> Abhishek Bansal &amp; Dr. Praveen Parshant</p>
-<p><strong>Email:</strong> kfcwriters@gmail.com | <strong>Phone:</strong> +91 9812018036</p>
-<hr/>
-<h3>Key Features</h3>
-<ul>
-<li>✓ Open Access (no subscription fees)</li>
-<li>✓ No article processing charges (APC)</li>
-<li>✓ Peer-reviewed (double-blind)</li>
-<li>✓ DOI assigned to each article</li>
-<li>✓ Compliant with COPE guidelines</li>
-<li>✓ Indexing: Google Scholar, Crossref (in progress)</li>
-<li>✓ Archiving: PKP PN, LOCKSS (planned)</li>
-</ul>
-<hr/>
-<h3>For Authors</h3>
-<ul>
-<li><a href="aims-scope.html">Aims &amp; Scope</a></li>
-<li><a href="author-guidelines.html">Author Guidelines</a></li>
-<li><a href="submit.html">Submit an Article</a></li>
-</ul>
-</div>
-</div>
-<div class="footer">
-<p>© 2026 Global Journal of Medical Research, Knowledge Framework Consulting. All rights reserved.</p>
-<p>This journal is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. | <a href="https://kfcwriters.github.io">Main Site</a> | <a href="mailto:kfcwriters@gmail.com">Contact</a></p>
-</div>
-<script>
+    <script>
         const repo = 'kfcwriters/kfcwriters.github.io';
         const folder = 'Journal';
         const apiUrl = `https://api.github.com/repos/${repo}/contents/${folder}`;
