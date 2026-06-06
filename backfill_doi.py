@@ -15,54 +15,39 @@ def get_articles_missing_doi():
                 missing.append(fname)
     return missing
 
-def fetch_doi_by_tag(tag):
+def fetch_doi_from_zenodo(tag):
     """
-    Fetch DOI for a given release tag by querying Zenodo for all records
-    belonging to the GitHub repository, then matching by version tag.
+    Fetch DOI using the GitHub release URL as related_identifier.
+    This is the most reliable method.
     """
-    # First, get all records for the GitHub repository
-    repo_name = "kfcwriters/kfcwriters.github.io"
-    # Search for records where the title contains the repo name
-    url = f"https://zenodo.org/api/records?q=title:\"{repo_name}\"&size=100"
+    release_url = f"https://github.com/kfcwriters/kfcwriters.github.io/releases/tag/{tag}"
+    url = f"https://zenodo.org/api/records?q=related_identifier:\"{release_url}\""
     try:
         resp = requests.get(url, timeout=30)
+        if resp.status_code != 200:
+            return None
         data = resp.json()
-        if data["hits"]["total"] > 0:
-            for record in data["hits"]["hits"]:
-                metadata = record.get("metadata", {})
-                # Check the version field (should match tag like "article-2026-06-06")
-                version = metadata.get("version", "")
-                if version == tag:
-                    return record["doi"]
-                # Also check related identifiers for GitHub release URL
-                related = metadata.get("related_identifiers", [])
-                for rel in related:
-                    if rel.get("identifier", "").endswith(f"/releases/tag/{tag}"):
-                        return record["doi"]
+        # Check if 'hits' exists and has items
+        if data.get("hits", {}).get("total", 0) > 0:
+            return data["hits"]["hits"][0]["doi"]
     except Exception as e:
-        print(f"Error searching Zenodo: {e}")
-    
-    # If not found, try pagination
-    page = 1
-    while True:
-        url = f"https://zenodo.org/api/records?q=title:\"{repo_name}\"&size=100&page={page}"
-        try:
-            resp = requests.get(url, timeout=30)
-            data = resp.json()
-            if not data["hits"]["hits"]:
-                break
-            for record in data["hits"]["hits"]:
-                metadata = record.get("metadata", {})
-                version = metadata.get("version", "")
-                if version == tag:
-                    return record["doi"]
-                related = metadata.get("related_identifiers", [])
-                for rel in related:
-                    if rel.get("identifier", "").endswith(f"/releases/tag/{tag}"):
-                        return record["doi"]
-            page += 1
-        except:
-            break
+        print(f"Error in fetch_doi_from_zenodo: {e}")
+    return None
+
+def fetch_doi_by_version(tag):
+    """
+    Search by version string.
+    """
+    url = f"https://zenodo.org/api/records?q=version:\"{tag}\""
+    try:
+        resp = requests.get(url, timeout=30)
+        if resp.status_code != 200:
+            return None
+        data = resp.json()
+        if data.get("hits", {}).get("total", 0) > 0:
+            return data["hits"]["hits"][0]["doi"]
+    except Exception as e:
+        print(f"Error in fetch_doi_by_version: {e}")
     return None
 
 def inject_doi(filename, doi):
@@ -83,6 +68,7 @@ def main():
         print("No articles missing DOI.")
         return
 
+    # Load existing cache
     cache = {}
     if os.path.exists("doi_cache.json"):
         with open("doi_cache.json", "r") as f:
@@ -93,10 +79,14 @@ def main():
         if not match:
             continue
         tag = f"article-{match.group(1)}"
+        
+        # Check cache first
         if tag in cache:
             inject_doi(fname, cache[tag])
             continue
-        doi = fetch_doi_by_tag(tag)
+        
+        # Try to fetch DOI
+        doi = fetch_doi_from_zenodo(tag) or fetch_doi_by_version(tag)
         if doi:
             cache[tag] = doi
             inject_doi(fname, doi)
@@ -104,6 +94,7 @@ def main():
         else:
             print(f"DOI not found for {tag}. You can manually add it to doi_cache.json: \"{tag}\": \"...\"")
 
+    # Save updated cache
     with open("doi_cache.json", "w") as f:
         json.dump(cache, f, indent=2)
 
