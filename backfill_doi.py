@@ -3,29 +3,29 @@ import re
 import json
 import time
 import requests
-from urllib.parse import quote
 
-# Your GitHub repository
-REPO_NAME = "kfcwriters/kfcwriters.github.io"
+# Use a known release tag to bootstrap the concept DOI
+KNOWN_TAG = "article-2026-06-06"
 
-def get_concept_doi():
-    """Find the concept DOI for the repository automatically."""
-    # Search for records that have the repository name in the title and are concepts
-    url = f"https://zenodo.org/api/records?q=title:\"{REPO_NAME}\"&type=concept&size=1"
+def get_concept_doi_from_known_tag(tag):
+    """Fetch the concept DOI by retrieving the record for a known release."""
+    # First, find the record for the known tag by searching by version
+    url = f"https://zenodo.org/api/records?q=version:\"{tag}\"&size=1"
     try:
         resp = requests.get(url, timeout=30)
         if resp.status_code == 200:
             data = resp.json()
             hits = data.get("hits", {}).get("hits", [])
             if hits:
-                # The concept record has a conceptdoi field or the DOI itself
-                concept = hits[0]
-                if "conceptdoi" in concept:
-                    return concept["conceptdoi"]
-                else:
-                    return concept["doi"]
+                record = hits[0]
+                # The concept DOI is in the 'conceptdoi' field or 'conceptrecid'
+                if "conceptdoi" in record:
+                    return record["conceptdoi"]
+                # Alternative: construct from conceptrecid
+                if "conceptrecid" in record:
+                    return f"10.5281/zenodo.{record['conceptrecid']}"
     except Exception as e:
-        print(f"Error fetching concept DOI: {e}")
+        print(f"Error fetching concept DOI from known tag: {e}")
     return None
 
 def get_articles_missing_doi():
@@ -74,9 +74,10 @@ def inject_doi(filename, doi):
     print(f"Injected DOI {doi} into {filename}")
 
 def main():
-    concept_doi = get_concept_doi()
+    # Get concept DOI from known release
+    concept_doi = get_concept_doi_from_known_tag(KNOWN_TAG)
     if not concept_doi:
-        print("Could not find concept DOI. Please check the repository name.")
+        print(f"Could not find concept DOI using known tag '{KNOWN_TAG}'. Please check the tag or network.")
         return
     print(f"Using concept DOI: {concept_doi}")
 
