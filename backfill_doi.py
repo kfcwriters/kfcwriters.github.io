@@ -4,9 +4,6 @@ import json
 import time
 import requests
 
-# Permanent concept DOI for your repository (obtained once)
-CONCEPT_DOI = "10.5281/zenodo.20559439"
-
 def get_articles_missing_doi():
     missing = []
     for fname in os.listdir("Journal"):
@@ -17,35 +14,23 @@ def get_articles_missing_doi():
                 missing.append(fname)
     return missing
 
-def fetch_doi_for_tag(tag, max_attempts=30, delay=20):
-    """Wait up to max_attempts * delay seconds for the version to appear in the concept's versions list."""
-    concept_url = f"https://zenodo.org/api/records/{CONCEPT_DOI}"
+def fetch_doi_via_search_page(tag, max_attempts=20, delay=30):
+    """Scrape DOI from Zenodo search page for a given version tag."""
+    search_url = f"https://zenodo.org/search?q=version:{tag}&l=list&p=1&s=10&sort=version"
     for attempt in range(max_attempts):
         try:
-            # Get the concept record to obtain the versions list URL
-            resp = requests.get(concept_url, timeout=10)
-            if resp.status_code != 200:
-                print(f"Attempt {attempt+1}: Cannot fetch concept record.")
-                time.sleep(delay)
-                continue
-            concept = resp.json()
-            versions_url = concept["links"]["versions"]
-            # Fetch all versions (paginated)
-            while versions_url:
-                vresp = requests.get(versions_url, timeout=10)
-                if vresp.status_code != 200:
-                    break
-                data = vresp.json()
-                for record in data.get("hits", {}).get("hits", []):
-                    metadata = record.get("metadata", {})
-                    version = metadata.get("version", "")
-                    if version == tag:
-                        return record["doi"]
-                versions_url = data.get("links", {}).get("next")
+            resp = requests.get(search_url, timeout=30)
+            if resp.status_code == 200:
+                # Look for a DOI pattern (10.5281/zenodo. followed by digits)
+                match = re.search(r'10\.5281/zenodo\.\d+', resp.text)
+                if match:
+                    return match.group(0)
+            print(f"Attempt {attempt+1}/{max_attempts}: DOI not yet visible. Status {resp.status_code}.")
         except Exception as e:
             print(f"Attempt {attempt+1} error: {e}")
-        print(f"Attempt {attempt+1}/{max_attempts}: DOI for {tag} not yet available. Waiting {delay}s...")
-        time.sleep(delay)
+        if attempt < max_attempts - 1:
+            print(f"Waiting {delay} seconds...")
+            time.sleep(delay)
     return None
 
 def inject_doi(filename, doi):
@@ -81,14 +66,14 @@ def main():
             inject_doi(fname, cache[tag])
             continue
 
-        print(f"Waiting for DOI of {tag} (up to 10 minutes)...")
-        doi = fetch_doi_for_tag(tag)
+        print(f"Searching for DOI of {tag} (up to 10 minutes)...")
+        doi = fetch_doi_via_search_page(tag)
         if doi:
             cache[tag] = doi
             inject_doi(fname, doi)
             print(f"Fetched DOI {doi} for {tag}")
         else:
-            print(f"❌ DOI for {tag} not found after 10 minutes. Will retry next hour.")
+            print(f"❌ DOI for {tag} not found after {20*30//60} minutes. Will retry next hour.")
 
     with open(cache_file, "w") as f:
         json.dump(cache, f, indent=2)
