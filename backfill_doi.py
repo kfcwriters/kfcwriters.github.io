@@ -5,6 +5,29 @@ import time
 import requests
 from urllib.parse import quote
 
+# Your GitHub repository
+REPO_NAME = "kfcwriters/kfcwriters.github.io"
+
+def get_concept_doi():
+    """Find the concept DOI for the repository automatically."""
+    # Search for records that have the repository name in the title and are concepts
+    url = f"https://zenodo.org/api/records?q=title:\"{REPO_NAME}\"&type=concept&size=1"
+    try:
+        resp = requests.get(url, timeout=30)
+        if resp.status_code == 200:
+            data = resp.json()
+            hits = data.get("hits", {}).get("hits", [])
+            if hits:
+                # The concept record has a conceptdoi field or the DOI itself
+                concept = hits[0]
+                if "conceptdoi" in concept:
+                    return concept["conceptdoi"]
+                else:
+                    return concept["doi"]
+    except Exception as e:
+        print(f"Error fetching concept DOI: {e}")
+    return None
+
 def get_articles_missing_doi():
     missing = []
     for fname in os.listdir("Journal"):
@@ -15,34 +38,28 @@ def get_articles_missing_doi():
                 missing.append(fname)
     return missing
 
-def fetch_doi_by_title(date_str):
-    """Search Zenodo using the exact title."""
-    title = f"kfcwriters/kfcwriters.github.io: Article {date_str}"
-    url = f"https://zenodo.org/api/records?q=title:\"{quote(title)}\"&size=1"
+def fetch_doi_for_release(tag, concept_doi):
+    """Fetch the DOI for a given release tag by listing versions of the concept."""
+    concept_url = f"https://zenodo.org/api/records/{concept_doi}"
     try:
-        resp = requests.get(url, timeout=30)
-        if resp.status_code == 200:
+        resp = requests.get(concept_url, timeout=30)
+        if resp.status_code != 200:
+            return None
+        concept = resp.json()
+        versions_url = concept["links"]["versions"]
+        while versions_url:
+            resp = requests.get(versions_url, timeout=30)
+            if resp.status_code != 200:
+                break
             data = resp.json()
-            hits = data.get("hits", {}).get("hits", [])
-            if hits:
-                return hits[0]["doi"]
-    except:
-        pass
-    return None
-
-def fetch_doi_by_release_url(tag):
-    """Fallback: search by GitHub release URL."""
-    release_url = f"https://github.com/kfcwriters/kfcwriters.github.io/releases/tag/{tag}"
-    url = f"https://zenodo.org/api/records?q=related_identifier:\"{quote(release_url)}\"&size=1"
-    try:
-        resp = requests.get(url, timeout=30)
-        if resp.status_code == 200:
-            data = resp.json()
-            hits = data.get("hits", {}).get("hits", [])
-            if hits:
-                return hits[0]["doi"]
-    except:
-        pass
+            for record in data.get("hits", {}).get("hits", []):
+                metadata = record.get("metadata", {})
+                version = metadata.get("version", "")
+                if version == tag:
+                    return record["doi"]
+            versions_url = data.get("links", {}).get("next")
+    except Exception as e:
+        print(f"Error fetching versions: {e}")
     return None
 
 def inject_doi(filename, doi):
@@ -57,41 +74,34 @@ def inject_doi(filename, doi):
     print(f"Injected DOI {doi} into {filename}")
 
 def main():
+    concept_doi = get_concept_doi()
+    if not concept_doi:
+        print("Could not find concept DOI. Please check the repository name.")
+        return
+    print(f"Using concept DOI: {concept_doi}")
+
     missing = get_articles_missing_doi()
     if not missing:
         print("No missing DOIs.")
         return
 
-    cache = {}
-    cache_file = "doi_cache.json"
-    if os.path.exists(cache_file):
-        with open(cache_file, "r") as f:
-            cache = json.load(f)
-
     for fname in missing:
         match = re.search(r'review-(\d{4}-\d{2}-\d{2})', fname)
         if not match:
             continue
-        date_str = match.group(1)
-        tag = f"article-{date_str}"
-        if tag in cache:
-            inject_doi(fname, cache[tag])
-            continue
-
-        # Try exact title search first
-        doi = fetch_doi_by_title(date_str)
-        if not doi:
-            # Fallback to release URL search
-            doi = fetch_doi_by_release_url(tag)
-        if doi:
-            cache[tag] = doi
-            inject_doi(fname, doi)
-            print(f"Fetched DOI {doi} for {tag}")
+        tag = f"article-{match.group(1)}"
+        # Retry up to 12 times (6 minutes) to allow Zenodo to process
+        for attempt in range(12):
+            doi = fetch_doi_for_release(tag, concept_doi)
+            if doi:
+                inject_doi(fname, doi)
+                print(f"Fetched DOI {doi} for {tag}")
+                break
+            else:
+                print(f"Attempt {attempt+1}/12: DOI for {tag} not yet available. Waiting 30s...")
+                time.sleep(30)
         else:
-            print(f"⚠️ DOI for {tag} not yet available. Will retry later.")
-
-    with open(cache_file, "w") as f:
-        json.dump(cache, f, indent=2)
+            print(f"❌ Could not fetch DOI for {tag} after 12 attempts. Will retry next hour.")
 
 if __name__ == "__main__":
     main()
