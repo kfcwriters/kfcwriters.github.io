@@ -4,10 +4,7 @@ import json
 import time
 import requests
 
-CONCEPT_RECID = "20559439"  # from concept DOI 10.5281/zenodo.20559439
-HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; ZenodoBackfill/1.0)"}
-MAX_ATTEMPTS = 6
-RETRY_DELAY = 30
+CONCEPT_PAGE_URL = "https://zenodo.org/record/20559439"
 
 def get_articles_missing_doi():
     missing = []
@@ -19,28 +16,35 @@ def get_articles_missing_doi():
                 missing.append(fname)
     return missing
 
-def fetch_doi_for_tag(tag):
-    """Fetch DOI for a version tag using conceptrecid search."""
-    url = f"https://zenodo.org/api/records?q=conceptrecid:{CONCEPT_RECID}&size=1000"
-    for attempt in range(MAX_ATTEMPTS):
+def fetch_doi_from_concept_page(tag, max_attempts=6, delay=30):
+    """Scrape the concept record HTML page to find DOI for the given version tag."""
+    for attempt in range(max_attempts):
         try:
-            resp = requests.get(url, headers=HEADERS, timeout=30)
+            resp = requests.get(CONCEPT_PAGE_URL, timeout=30, headers={"User-Agent": "Mozilla/5.0"})
             if resp.status_code != 200:
-                print(f"Attempt {attempt+1}: API status {resp.status_code}")
-                time.sleep(RETRY_DELAY)
+                print(f"Attempt {attempt+1}: page status {resp.status_code}")
+                time.sleep(delay)
                 continue
-            data = resp.json()
-            hits = data.get("hits", {}).get("hits", [])
-            for record in hits:
-                metadata = record.get("metadata", {})
-                version = metadata.get("version", "")
-                if version == tag:
-                    return record["doi"]
-            # If not found in first page, there may be pagination, but the query with size=1000 should get all.
+            html = resp.text
+            # Find the version tag in the page. The page contains many "Version: article-2026-06-07" strings.
+            # We need to capture the DOI that precedes it. Look for a pattern: DOI 10.5281/zenodo.xxxxxx and then later Version: tag
+            # Use a regex that captures a DOI and then later the version tag within a short window.
+            # Simpler: split the page by 'Version:' and look at the chunk before the tag.
+            parts = re.split(r'Version:\s*', html)
+            for i, part in enumerate(parts):
+                if part.startswith(tag):
+                    # The DOI is in the previous part (or within the previous 500 chars)
+                    # Look for a DOI pattern in the previous part
+                    prev = parts[i-1]
+                    doi_match = re.search(r'10\.5281/zenodo\.\d+', prev)
+                    if doi_match:
+                        return doi_match.group(0)
+            # Also try a direct search: find all DOI occurrences and then the nearest version tag
+            # But the above split method should work.
         except Exception as e:
             print(f"Attempt {attempt+1} error: {e}")
-        print(f"Attempt {attempt+1}/{MAX_ATTEMPTS}: DOI for {tag} not yet in list. Waiting {RETRY_DELAY}s...")
-        time.sleep(RETRY_DELAY)
+        print(f"Attempt {attempt+1}/{max_attempts}: DOI for {tag} not yet on concept page. Waiting {delay}s...")
+        time.sleep(delay)
     return None
 
 def inject_doi(filename, doi):
@@ -75,8 +79,8 @@ def main():
             inject_doi(fname, cache[tag])
             continue
 
-        print(f"Searching for DOI of {tag} (up to {MAX_ATTEMPTS*RETRY_DELAY//60} minutes)...")
-        doi = fetch_doi_for_tag(tag)
+        print(f"Searching concept page for DOI of {tag}...")
+        doi = fetch_doi_from_concept_page(tag)
         if doi:
             cache[tag] = doi
             inject_doi(fname, doi)
