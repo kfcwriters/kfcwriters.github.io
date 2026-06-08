@@ -1,0 +1,21 @@
+name: Remove Names from Articles
+on: workflow_dispatch
+jobs:
+  remove:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run removal script
+        run: python remove_names.py
+      - name: Commit changes
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git add Journal/
+          git diff --quiet && git diff --staged --quiet || git commit -m "Remove names from articles"
+          git push
