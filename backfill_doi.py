@@ -4,7 +4,7 @@ import json
 import time
 import requests
 
-# This is the permanent concept DOI for your repository (obtained once from Zenodo)
+# Permanent concept DOI for your repository (obtained once)
 CONCEPT_DOI = "10.5281/zenodo.20559439"
 
 def get_articles_missing_doi():
@@ -17,29 +17,35 @@ def get_articles_missing_doi():
                 missing.append(fname)
     return missing
 
-def fetch_doi_for_release(tag):
-    """Get DOI for a specific version tag using the concept DOI."""
+def fetch_doi_for_tag(tag, max_attempts=30, delay=20):
+    """Wait up to max_attempts * delay seconds for the version to appear in the concept's versions list."""
     concept_url = f"https://zenodo.org/api/records/{CONCEPT_DOI}"
-    try:
-        resp = requests.get(concept_url, timeout=10)
-        if resp.status_code != 200:
-            return None
-        concept = resp.json()
-        versions_url = concept["links"]["versions"]
-        # Fetch all versions (paginated)
-        while versions_url:
-            resp = requests.get(versions_url, timeout=10)
+    for attempt in range(max_attempts):
+        try:
+            # Get the concept record to obtain the versions list URL
+            resp = requests.get(concept_url, timeout=10)
             if resp.status_code != 200:
-                break
-            data = resp.json()
-            for record in data.get("hits", {}).get("hits", []):
-                metadata = record.get("metadata", {})
-                version = metadata.get("version", "")
-                if version == tag:
-                    return record["doi"]
-            versions_url = data.get("links", {}).get("next")
-    except Exception as e:
-        print(f"Error: {e}")
+                print(f"Attempt {attempt+1}: Cannot fetch concept record.")
+                time.sleep(delay)
+                continue
+            concept = resp.json()
+            versions_url = concept["links"]["versions"]
+            # Fetch all versions (paginated)
+            while versions_url:
+                vresp = requests.get(versions_url, timeout=10)
+                if vresp.status_code != 200:
+                    break
+                data = vresp.json()
+                for record in data.get("hits", {}).get("hits", []):
+                    metadata = record.get("metadata", {})
+                    version = metadata.get("version", "")
+                    if version == tag:
+                        return record["doi"]
+                versions_url = data.get("links", {}).get("next")
+        except Exception as e:
+            print(f"Attempt {attempt+1} error: {e}")
+        print(f"Attempt {attempt+1}/{max_attempts}: DOI for {tag} not yet available. Waiting {delay}s...")
+        time.sleep(delay)
     return None
 
 def inject_doi(filename, doi):
@@ -59,23 +65,33 @@ def main():
         print("No missing DOIs.")
         return
 
+    # Load cache
+    cache = {}
+    cache_file = "doi_cache.json"
+    if os.path.exists(cache_file):
+        with open(cache_file, "r") as f:
+            cache = json.load(f)
+
     for fname in missing:
         match = re.search(r'review-(\d{4}-\d{2}-\d{2})', fname)
         if not match:
             continue
         tag = f"article-{match.group(1)}"
-        # Only retry 3 times (30 seconds total) because the concept versions list is immediate
-        for attempt in range(3):
-            doi = fetch_doi_for_release(tag)
-            if doi:
-                inject_doi(fname, doi)
-                print(f"Fetched DOI {doi} for {tag}")
-                break
-            else:
-                print(f"Attempt {attempt+1}/3: DOI for {tag} not yet in version list. Waiting 10s...")
-                time.sleep(10)
+        if tag in cache:
+            inject_doi(fname, cache[tag])
+            continue
+
+        print(f"Waiting for DOI of {tag} (up to 10 minutes)...")
+        doi = fetch_doi_for_tag(tag)
+        if doi:
+            cache[tag] = doi
+            inject_doi(fname, doi)
+            print(f"Fetched DOI {doi} for {tag}")
         else:
-            print(f"❌ Could not fetch DOI for {tag} after 3 attempts. It may appear later.")
+            print(f"❌ DOI for {tag} not found after 10 minutes. Will retry next hour.")
+
+    with open(cache_file, "w") as f:
+        json.dump(cache, f, indent=2)
 
 if __name__ == "__main__":
     main()
