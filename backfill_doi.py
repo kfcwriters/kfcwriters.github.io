@@ -4,54 +4,43 @@ import json
 import time
 import requests
 
-CONCEPT_RECID = "20559439"  # from your concept DOI 10.5281/zenodo.20559439
+CONCEPT_RECID = "20559439"  # from concept DOI 10.5281/zenodo.20559439
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; ZenodoBackfill/1.0)"}
+MAX_ATTEMPTS = 6
+RETRY_DELAY = 30
 
 def get_articles_missing_doi():
     missing = []
     for fname in os.listdir("Journal"):
         if not fname.startswith("review-") or not fname.endswith(".html"):
             continue
-        with open(os.path.join("Journal", fname), "r") as f:
+        with open(os.path.join("Journal", fname)) as f:
             if 'will be assigned after publication' in f.read():
                 missing.append(fname)
     return missing
 
-def fetch_doi_for_tag(tag, max_attempts=6, delay=30):
-    """Fetch DOI for a version tag from Zenodo's versions API."""
-    url = f"https://zenodo.org/api/records/{CONCEPT_RECID}/versions"
-    for attempt in range(max_attempts):
+def fetch_doi_for_tag(tag):
+    """Fetch DOI for a version tag using conceptrecid search."""
+    url = f"https://zenodo.org/api/records?q=conceptrecid:{CONCEPT_RECID}&size=1000"
+    for attempt in range(MAX_ATTEMPTS):
         try:
             resp = requests.get(url, headers=HEADERS, timeout=30)
             if resp.status_code != 200:
                 print(f"Attempt {attempt+1}: API status {resp.status_code}")
-                time.sleep(delay)
+                time.sleep(RETRY_DELAY)
                 continue
             data = resp.json()
-            # The response contains a 'hits' object with an array of records
-            for record in data.get("hits", {}).get("hits", []):
+            hits = data.get("hits", {}).get("hits", [])
+            for record in hits:
                 metadata = record.get("metadata", {})
                 version = metadata.get("version", "")
                 if version == tag:
                     return record["doi"]
-            # If not found, there might be pagination; but the API typically returns all.
-            # However, we'll also check the next page if present.
-            next_link = data.get("links", {}).get("next")
-            while next_link:
-                resp = requests.get(next_link, headers=HEADERS, timeout=30)
-                if resp.status_code != 200:
-                    break
-                data = resp.json()
-                for record in data.get("hits", {}).get("hits", []):
-                    metadata = record.get("metadata", {})
-                    version = metadata.get("version", "")
-                    if version == tag:
-                        return record["doi"]
-                next_link = data.get("links", {}).get("next")
+            # If not found in first page, there may be pagination, but the query with size=1000 should get all.
         except Exception as e:
             print(f"Attempt {attempt+1} error: {e}")
-        print(f"Attempt {attempt+1}/{max_attempts}: DOI for {tag} not yet in version list. Waiting {delay}s...")
-        time.sleep(delay)
+        print(f"Attempt {attempt+1}/{MAX_ATTEMPTS}: DOI for {tag} not yet in list. Waiting {RETRY_DELAY}s...")
+        time.sleep(RETRY_DELAY)
     return None
 
 def inject_doi(filename, doi):
@@ -74,7 +63,7 @@ def main():
     cache = {}
     cache_file = "doi_cache.json"
     if os.path.exists(cache_file):
-        with open(cache_file, "r") as f:
+        with open(cache_file) as f:
             cache = json.load(f)
 
     for fname in missing:
@@ -86,14 +75,14 @@ def main():
             inject_doi(fname, cache[tag])
             continue
 
-        print(f"Fetching DOI for {tag} from Zenodo versions API...")
+        print(f"Searching for DOI of {tag} (up to {MAX_ATTEMPTS*RETRY_DELAY//60} minutes)...")
         doi = fetch_doi_for_tag(tag)
         if doi:
             cache[tag] = doi
             inject_doi(fname, doi)
-            print(f"Fetched DOI {doi} for {tag}")
+            print(f"Fetched DOI {doi}")
         else:
-            print(f"❌ DOI for {tag} not found after {max_attempts*delay//60} minutes. Will retry next hour.")
+            print(f"❌ DOI for {tag} not found. Will retry next hour.")
 
     with open(cache_file, "w") as f:
         json.dump(cache, f, indent=2)
