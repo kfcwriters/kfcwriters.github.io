@@ -101,7 +101,7 @@ def markdown_to_html(text):
 def generate_article():
     today = datetime.datetime.utcnow().date()
     date_str = today.strftime("%Y-%m-%d")
-    date_str_slash = date_str.replace('-', '/')  # for Scholar
+    date_str_slash = date_str.replace('-', '/')
     idx = today.timetuple().tm_yday % len(TOPICS)
     topic = TOPICS[idx]
     body_md = generate_review(today, topic)
@@ -130,8 +130,7 @@ def generate_article():
     </style>
     <!-- Google Scholar meta tags -->
     <meta name="citation_title" content="{topic}">
-    <meta name="citation_author" content="Abhishek Bansal">
-    <meta name="citation_author" content="Dr. Praveen Parshant">
+    <!-- citation_author tags removed -->
     <meta name="citation_publication_date" content="{date_str_slash}">
     <meta name="citation_journal_title" content="Global Journal of Medical Research">
     <meta name="citation_issn" content="Applied for">
@@ -156,7 +155,7 @@ def generate_article():
     <div class="container">
         <div class="article">
             <h1>{topic}</h1>
-            <div class="meta">Published: {date_str} | Co-Chief Editors: Abhishek Bansal & Dr. Praveen Parshant</div>
+            <div class="meta">Published: {date_str}</div>
             <div class="doi">DOI: <span id="doi-value">will be assigned after publication</span></div>
             <div style="margin-top: 20px; font-family: Georgia, serif; line-height: 1.7;">
                 {body_html}
@@ -168,13 +167,12 @@ def generate_article():
     </div>
 </body>
 </html>"""
-
     html_content = html_template.format(topic=topic, date_str=date_str, date_str_slash=date_str_slash, body_html=body_html)
     os.makedirs("Journal", exist_ok=True)
     filename = f"Journal/review-{date_str}.html"
     with open(filename, "w", encoding="utf-8") as f:
         f.write(html_content)
-    print(f"Generated {filename} with Google Scholar meta tags.")
+    print(f"Generated {filename}")
 
 if __name__ == "__main__":
     generate_article()
