@@ -4,30 +4,6 @@ import json
 import time
 import requests
 
-# Use a known release tag to bootstrap the concept DOI
-KNOWN_TAG = "article-2026-06-06"
-
-def get_concept_doi_from_known_tag(tag):
-    """Fetch the concept DOI by retrieving the record for a known release."""
-    # First, find the record for the known tag by searching by version
-    url = f"https://zenodo.org/api/records?q=version:\"{tag}\"&size=1"
-    try:
-        resp = requests.get(url, timeout=30)
-        if resp.status_code == 200:
-            data = resp.json()
-            hits = data.get("hits", {}).get("hits", [])
-            if hits:
-                record = hits[0]
-                # The concept DOI is in the 'conceptdoi' field or 'conceptrecid'
-                if "conceptdoi" in record:
-                    return record["conceptdoi"]
-                # Alternative: construct from conceptrecid
-                if "conceptrecid" in record:
-                    return f"10.5281/zenodo.{record['conceptrecid']}"
-    except Exception as e:
-        print(f"Error fetching concept DOI from known tag: {e}")
-    return None
-
 def get_articles_missing_doi():
     missing = []
     for fname in os.listdir("Journal"):
@@ -38,28 +14,18 @@ def get_articles_missing_doi():
                 missing.append(fname)
     return missing
 
-def fetch_doi_for_release(tag, concept_doi):
-    """Fetch the DOI for a given release tag by listing versions of the concept."""
-    concept_url = f"https://zenodo.org/api/records/{concept_doi}"
+def fetch_doi_from_web(tag):
+    """Scrape the DOI from the Zenodo search page for a given version tag."""
+    search_url = f"https://zenodo.org/search?q=version:{tag}&l=list&p=1&s=10&sort=version"
     try:
-        resp = requests.get(concept_url, timeout=30)
-        if resp.status_code != 200:
-            return None
-        concept = resp.json()
-        versions_url = concept["links"]["versions"]
-        while versions_url:
-            resp = requests.get(versions_url, timeout=30)
-            if resp.status_code != 200:
-                break
-            data = resp.json()
-            for record in data.get("hits", {}).get("hits", []):
-                metadata = record.get("metadata", {})
-                version = metadata.get("version", "")
-                if version == tag:
-                    return record["doi"]
-            versions_url = data.get("links", {}).get("next")
+        resp = requests.get(search_url, timeout=30)
+        if resp.status_code == 200:
+            # Look for a DOI pattern in the HTML
+            match = re.search(r'10\.5281/zenodo\.\d+', resp.text)
+            if match:
+                return match.group(0)
     except Exception as e:
-        print(f"Error fetching versions: {e}")
+        print(f"Error scraping DOI: {e}")
     return None
 
 def inject_doi(filename, doi):
@@ -74,13 +40,6 @@ def inject_doi(filename, doi):
     print(f"Injected DOI {doi} into {filename}")
 
 def main():
-    # Get concept DOI from known release
-    concept_doi = get_concept_doi_from_known_tag(KNOWN_TAG)
-    if not concept_doi:
-        print(f"Could not find concept DOI using known tag '{KNOWN_TAG}'. Please check the tag or network.")
-        return
-    print(f"Using concept DOI: {concept_doi}")
-
     missing = get_articles_missing_doi()
     if not missing:
         print("No missing DOIs.")
@@ -91,15 +50,15 @@ def main():
         if not match:
             continue
         tag = f"article-{match.group(1)}"
-        # Retry up to 12 times (6 minutes) to allow Zenodo to process
+        # Retry up to 12 times (6 minutes) to allow Zenodo to become available
         for attempt in range(12):
-            doi = fetch_doi_for_release(tag, concept_doi)
+            doi = fetch_doi_from_web(tag)
             if doi:
                 inject_doi(fname, doi)
                 print(f"Fetched DOI {doi} for {tag}")
                 break
             else:
-                print(f"Attempt {attempt+1}/12: DOI for {tag} not yet available. Waiting 30s...")
+                print(f"Attempt {attempt+1}/12: DOI for {tag} not yet visible. Waiting 30s...")
                 time.sleep(30)
         else:
             print(f"❌ Could not fetch DOI for {tag} after 12 attempts. Will retry next hour.")
