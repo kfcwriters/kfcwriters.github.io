@@ -29,9 +29,10 @@ def fetch_doi_via_api(tag):
             return None
         data = resp.json()
         for record in data.get("hits", {}).get("hits", []):
-            if record.get("metadata", {}).get("version") == tag:
+            metadata = record.get("metadata", {})
+            if metadata.get("version") == tag:
                 return record["doi"]
-        # Paginate
+        # Paginate if needed
         next_link = data.get("links", {}).get("next")
         while next_link:
             resp = requests.get(next_link, headers=headers, timeout=30)
@@ -39,7 +40,8 @@ def fetch_doi_via_api(tag):
                 break
             data = resp.json()
             for record in data.get("hits", {}).get("hits", []):
-                if record.get("metadata", {}).get("version") == tag:
+                metadata = record.get("metadata", {})
+                if metadata.get("version") == tag:
                     return record["doi"]
             next_link = data.get("links", {}).get("next")
     except Exception as e:
