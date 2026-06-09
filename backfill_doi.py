@@ -3,7 +3,7 @@ import re
 import json
 import requests
 
-CONCEPT_RECID = "20559439"   # from your concept DOI 10.5281/zenodo.20559439
+CONCEPT_RECID = "20559439"
 ZENODO_TOKEN = os.environ.get("ZENODO_TOKEN")
 
 def get_articles_missing_doi():
@@ -16,9 +16,9 @@ def get_articles_missing_doi():
                 missing.append(fname)
     return missing
 
-def fetch_doi_for_tag(tag):
+def fetch_doi_via_api(tag):
     if not ZENODO_TOKEN:
-        print("ZENODO_TOKEN not set. Please add it as a GitHub secret.")
+        print("ZENODO_TOKEN not set. Cannot fetch DOIs automatically.")
         return None
     headers = {"Authorization": f"Bearer {ZENODO_TOKEN}"}
     url = f"https://zenodo.org/api/records?q=conceptrecid:{CONCEPT_RECID}&size=1000"
@@ -29,11 +29,9 @@ def fetch_doi_for_tag(tag):
             return None
         data = resp.json()
         for record in data.get("hits", {}).get("hits", []):
-            metadata = record.get("metadata", {})
-            version = metadata.get("version", "")
-            if version == tag:
+            if record.get("metadata", {}).get("version") == tag:
                 return record["doi"]
-        # Paginate if needed
+        # Paginate
         next_link = data.get("links", {}).get("next")
         while next_link:
             resp = requests.get(next_link, headers=headers, timeout=30)
@@ -41,13 +39,11 @@ def fetch_doi_for_tag(tag):
                 break
             data = resp.json()
             for record in data.get("hits", {}).get("hits", []):
-                metadata = record.get("metadata", {})
-                version = metadata.get("version", "")
-                if version == tag:
+                if record.get("metadata", {}).get("version") == tag:
                     return record["doi"]
             next_link = data.get("links", {}).get("next")
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"API exception: {e}")
     return None
 
 def inject_doi(filename, doi):
@@ -81,9 +77,7 @@ def main():
         if tag in cache:
             inject_doi(fname, cache[tag])
             continue
-
-        print(f"Fetching DOI for {tag}...")
-        doi = fetch_doi_for_tag(tag)
+        doi = fetch_doi_via_api(tag)
         if doi:
             cache[tag] = doi
             inject_doi(fname, doi)
