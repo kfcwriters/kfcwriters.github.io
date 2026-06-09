@@ -4,16 +4,15 @@ import json
 import time
 import requests
 
-# Your concept record ID (from concept DOI 10.5281/zenodo.20559439)
 CONCEPT_RECID = "20559439"
 ZENODO_TOKEN = os.environ.get("ZENODO_TOKEN")
 
-# Static fallback for already known DOIs (only used if API fails)
+# Static fallback for already known DOIs (used only if API fails)
 KNOWN_DOIS = {
     "article-2026-06-05": "10.5281/zenodo.20559776",
     "article-2026-06-06": "10.5281/zenodo.20570421",
     "article-2026-06-07": "10.5281/zenodo.20580199",
-    # "article-2026-06-08": "10.5281/zenodo.xxxxxxx",  # will be fetched by API
+    # add future known DOIs here if needed
 }
 
 def get_articles_missing_doi():
@@ -26,13 +25,14 @@ def get_articles_missing_doi():
                 missing.append(fname)
     return missing
 
-def fetch_doi_via_api(tag, max_attempts=5, delay=30):
-    """Fetch DOI using Zenodo API with token (versions endpoint)."""
+def fetch_doi_via_search_api(tag, max_attempts=5, delay=30):
+    """Use Zenodo search API with conceptrecid to find DOI for a version tag."""
     if not ZENODO_TOKEN:
         print("ZENODO_TOKEN not set. Skipping API fetch.")
         return None
     headers = {"Authorization": f"Bearer {ZENODO_TOKEN}"}
-    url = f"https://zenodo.org/api/records/{CONCEPT_RECID}/versions"
+    # Search for all records belonging to the concept
+    url = f"https://zenodo.org/api/records?q=conceptrecid:{CONCEPT_RECID}&size=1000"
     for attempt in range(max_attempts):
         try:
             resp = requests.get(url, headers=headers, timeout=30)
@@ -42,10 +42,11 @@ def fetch_doi_via_api(tag, max_attempts=5, delay=30):
                     time.sleep(delay)
                 continue
             data = resp.json()
-            # Iterate through versions (paginated)
+            # Iterate through all records (paginated if necessary)
             while True:
                 for record in data.get("hits", {}).get("hits", []):
-                    version = record.get("metadata", {}).get("version", "")
+                    metadata = record.get("metadata", {})
+                    version = metadata.get("version", "")
                     if version == tag:
                         return record["doi"]
                 # Next page
@@ -104,9 +105,9 @@ def main():
             print(f"Used static DOI for {tag}")
             continue
 
-        # Use API with token
-        print(f"Fetching DOI for {tag} from Zenodo API...")
-        doi = fetch_doi_via_api(tag)
+        # Use search API with token
+        print(f"Fetching DOI for {tag} from Zenodo search API...")
+        doi = fetch_doi_via_search_api(tag)
         if doi:
             cache[tag] = doi
             inject_doi(fname, doi)
