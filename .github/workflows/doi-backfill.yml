@@ -17,6 +17,8 @@ jobs:
       - name: Install dependencies
         run: pip install requests
       - name: Run backfill
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
         run: python backfill_doi.py
       - name: Commit updates
         run: |
