@@ -3,6 +3,23 @@ import datetime
 import random
 import re
 
+# ========== RANDOMISED AUTHOR NAMES (edit this list as you like) ==========
+AUTHOR_LIST = [
+    "Dr. Anjali Sharma",
+    "Dr. Rajiv Menon",
+    "Dr. Priya Mehta",
+    "Dr. Vikram Singh",
+    "Dr. Neha Gupta",
+    "Prof. Michael Chen",
+    "Prof. Sarah Johnson",
+    "Dr. Elena Rodriguez",
+    "Prof. Amit Kumar",
+    "Dr. Fatima Al-Mansouri"
+]
+# If you want two authors per article, set USE_TWO_AUTHORS = True
+USE_TWO_AUTHORS = False
+# ==========================================================================
+
 TOPICS = [
     "Recent Advances in Acne Treatment",
     "Novel Therapies for Type 2 Diabetes Mellitus",
@@ -42,6 +59,13 @@ CONCLUSION_TEMPLATES = [
     "While current evidence is promising, more head‑to‑head comparative trials are needed. Policy makers should facilitate access to novel therapies.",
     "The evolving landscape of {topic_lower} treatment requires continuous education. Clinicians are encouraged to consult updated guidelines regularly."
 ]
+
+def get_random_author():
+    if USE_TWO_AUTHORS:
+        authors = random.sample(AUTHOR_LIST, 2)
+        return " & ".join(authors)
+    else:
+        return random.choice(AUTHOR_LIST)
 
 def generate_review(today, topic):
     seed = today.toordinal()
@@ -104,6 +128,7 @@ def generate_article():
     date_str_slash = date_str.replace('-', '/')
     idx = today.timetuple().tm_yday % len(TOPICS)
     topic = TOPICS[idx]
+    author = get_random_author()
     body_md = generate_review(today, topic)
     body_html = markdown_to_html(body_md)
 
@@ -130,7 +155,7 @@ def generate_article():
     </style>
     <!-- Google Scholar meta tags -->
     <meta name="citation_title" content="{topic}">
-    <!-- citation_author tags removed -->
+    <meta name="citation_author" content="{author}">
     <meta name="citation_publication_date" content="{date_str_slash}">
     <meta name="citation_journal_title" content="Global Journal of Medical Research">
     <meta name="citation_issn" content="Applied for">
@@ -155,7 +180,7 @@ def generate_article():
     <div class="container">
         <div class="article">
             <h1>{topic}</h1>
-            <div class="meta">Published: {date_str}</div>
+            <div class="meta">Published: {date_str} | Author: {author}</div>
             <div class="doi">DOI: <span id="doi-value">will be assigned after publication</span></div>
             <div style="margin-top: 20px; font-family: Georgia, serif; line-height: 1.7;">
                 {body_html}
@@ -167,12 +192,12 @@ def generate_article():
     </div>
 </body>
 </html>"""
-    html_content = html_template.format(topic=topic, date_str=date_str, date_str_slash=date_str_slash, body_html=body_html)
+    html_content = html_template.format(topic=topic, date_str=date_str, date_str_slash=date_str_slash, author=author, body_html=body_html)
     os.makedirs("Journal", exist_ok=True)
     filename = f"Journal/review-{date_str}.html"
     with open(filename, "w", encoding="utf-8") as f:
         f.write(html_content)
-    print(f"Generated {filename}")
+    print(f"Generated {filename} with author: {author}")
 
 if __name__ == "__main__":
     generate_article()
