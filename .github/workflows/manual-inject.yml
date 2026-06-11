@@ -1,0 +1,23 @@
+name: Manual DOI Inject
+on: workflow_dispatch
+jobs:
+  inject:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run backfill
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+        run: python backfill_doi.py
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add Journal/ doi_cache.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "Manual DOI inject"
+          git push
